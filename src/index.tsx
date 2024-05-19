@@ -1,15 +1,39 @@
-/* @refresh reload */
-import { render } from 'solid-js/web';
+import { render } from 'solid-js/web'
+import NotFound from './pages/NotFound'
+import Login from './pages/Login'
 
-import './index.css';
-import App from './App';
+import './index.css'
+import App from './App'
+import { Route, Router } from '@solidjs/router'
+import Layout from './pages/Layout'
+import BaconIpsum from './pages/BaconIpsum'
+import Home from './pages/Home'
+import GridExample from './pages/GridExample'
+import ExampleTwo from './pages/ExampleTwo'
+import Settings from './pages/Settings'
+import { PleaseWait } from './components/PleaseWait'
 
-const root = document.getElementById('root');
+const root = document.getElementById('root')
 
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
-  throw new Error(
-    'Root element not found. Did you forget to add it to your index.html? Or maybe the id attribute got misspelled?',
-  );
+    throw new Error(
+        'Root element not found. Did you forget to add it to your index.html? Or maybe the id attribute got misspelled?',
+    )
 }
 
-render(() => <App />, root!);
+render(() => (
+    <>
+        <PleaseWait />
+        <Router root={App}>
+            <Route path='/login' component={Login} />
+            <Route path="/" component={Layout}>
+                <Route path="" component={Home} />
+                <Route path="gridexample" component={GridExample} />
+                <Route path="exampletwo" component={ExampleTwo} />
+                <Route path="baconipsum" component={BaconIpsum} />
+                <Route path="settings" component={Settings} />
+            </Route>
+            <Route path="*" component={NotFound} />
+        </Router>
+    </>
+), root!)
