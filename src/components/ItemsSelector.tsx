@@ -1,53 +1,54 @@
-import { Dispatch, FC, MouseEvent, SetStateAction, useEffect, useState } from 'react';
+import { Accessor, Setter, createSignal, onMount } from 'solid-js/types/reactive/signal';
 import { NameGuidPair } from '../models/NameGuidPair';
 import FilteredList from './FilteredList';
-import { Box, Button, Grid, Stack, Typography } from '@mui/material';
+import { Box, Button, Grid, Stack, Typography } from '@suid/material';
+import { Component } from 'solid-js';
 
 export interface Props {
-    allItems: NameGuidPair[]
+    allItems: Accessor<NameGuidPair[]>
     initiallySelectedItems: NameGuidPair[]
     label: string
-    selected: NameGuidPair[]
-    setSelected: Dispatch<SetStateAction<NameGuidPair[]>>,
+    selected: Accessor<NameGuidPair[]>
+    setSelected: Setter<NameGuidPair[]>,
 }
 
-const ItemsSelector: FC<Props> = ({ allItems, initiallySelectedItems, label, selected, setSelected }) => {
+const ItemsSelector: Component<Props> = ({ allItems, initiallySelectedItems, label, selected, setSelected }) => {
 
-    const [available, setAvailable] = useState<NameGuidPair[]>([])
+    const [available, setAvailable] = createSignal<NameGuidPair[]>([])
 
-    const handleClick = (event: MouseEvent<HTMLElement>, source: NameGuidPair[], setSource: Dispatch<SetStateAction<NameGuidPair[]>>, destination: NameGuidPair[], setDestination: Dispatch<SetStateAction<NameGuidPair[]>>): void => {
-        const clickedName = event.currentTarget.textContent
-        const clicked = source.find(s => s.Name === clickedName)
+    const handleClick = (event: MouseEvent, source: Accessor<NameGuidPair[]>, setSource: Setter<NameGuidPair[]>, destination: Accessor<NameGuidPair[]>, setDestination: Setter<NameGuidPair[]>): void => {
+        const clickedName = (event.currentTarget as HTMLElement).textContent
+        const clicked = source().find(s => s.Name === clickedName)
 
         if (clicked === undefined) return
 
-        setSource(source.filter(s => s.Name !== clickedName))
-        setDestination([...destination, clicked]
+        setSource(source().filter(s => s.Name !== clickedName))
+        setDestination([...destination(), clicked]
             .sort((a, b) => a.Name.localeCompare(b.Name)))
     }
 
-    const handleClickSelect = (event: MouseEvent<HTMLElement>): void => {
+    const handleClickSelect = (event: MouseEvent): void => {
         handleClick(event, available, setAvailable, selected, setSelected)
     }
 
-    const handleClickDeselect = (event: MouseEvent<HTMLElement>): void => {
+    const handleClickDeselect = (event: MouseEvent): void => {
         handleClick(event, selected, setSelected, available, setAvailable)
     }
 
-    const handleClickSelectAll = (event: MouseEvent<HTMLElement>): void => {
+    const handleClickSelectAll = (event: MouseEvent): void => {
         setAvailable([])
         setSelected(allItems);
     }
 
-    const handleClickDeselectAll = (event: MouseEvent<HTMLElement>): void => {
+    const handleClickDeselectAll = (event: MouseEvent): void => {
         setSelected([]);
         setAvailable(allItems)
     }
 
-    useEffect(() => {
+    onMount(() => {
         setSelected(initiallySelectedItems)
-        setAvailable(allItems.filter(ai => !initiallySelectedItems.some(isi => isi.Guid === ai.Guid)))
-    }, [allItems, initiallySelectedItems, setSelected])
+        setAvailable(allItems().filter(ai => !initiallySelectedItems.some(isi => isi.Guid === ai.Guid)))
+    })
 
     return (
         <Box>
@@ -56,7 +57,7 @@ const ItemsSelector: FC<Props> = ({ allItems, initiallySelectedItems, label, sel
                 <Grid item sm={12} md={5}>
                     <FilteredList
                         label='Selected'
-                        items={selected}
+                        items={selected()}
                         handleClick={handleClickDeselect}
                     />
                 </Grid>
@@ -69,7 +70,7 @@ const ItemsSelector: FC<Props> = ({ allItems, initiallySelectedItems, label, sel
                 <Grid item sm={12} md={5}>
                     <FilteredList
                         label='Available'
-                        items={available}
+                        items={available()}
                         handleClick={handleClickSelect}
                     />
                 </Grid>

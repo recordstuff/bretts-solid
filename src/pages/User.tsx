@@ -1,50 +1,27 @@
-import { ChangeEvent, Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from "react"
-import { useOutletContext } from "react-router-dom"
 import { roleClient } from "../services/RoleClient"
 import { userClient } from "../services/UserClient"
 import { UserDetail, emptyUserDetail } from "../models/UserDetail"
-import { clearAllWaits, doneWaiting, pleaseWait } from "../reducers/WaitSpinnerSlice"
-import { useDispatch } from "react-redux"
-import { Button, Stack, TextField } from "@mui/material"
-import { useParams } from "react-router-dom";
-import { addBreadcrumb } from "../reducers/BreadcrumbsSlice"
+import { Button, Stack, TextField } from "@suid/material"
 import ItemsSelector from "../components/ItemsSelector"
 import { NameGuidPair } from "../models/NameGuidPair"
-import { useNavigate } from 'react-router-dom';
 import { UserNew } from "../models/UserNew"
 import { AxiosError } from "axios"
 import { HTTP_STATUS_CODES } from "../services/HttpClient"
+import { Component, createResource, createSignal } from "solid-js"
+import { useNavigate, useParams } from "@solidjs/router"
 
-const User: FC = () => {
+const User: Component = () => {
 
-    const dispatch = useDispatch()
-    const setPageTitle: Dispatch<SetStateAction<string>> = useOutletContext()
-    const [roles, setRoles] = useState<NameGuidPair[]>([])
-    const [user, setUser] = useState<UserDetail>(emptyUserDetail())
-    const [password, setPassword] = useState<string>('')
-    const [selectedRoles, setSelectedRoles] = useState<NameGuidPair[]>([])
+    const [password, setPassword] = createSignal<string>('')
+    const [selectedRoles, setSelectedRoles] = createSignal<NameGuidPair[]>([])
 
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const getRoles = useCallback(async (): Promise<void> => {
-        dispatch(pleaseWait())
+    const [user, {mutate, refetch}] = createResource(id, () => {return userClient.getUser(id)}, {initialValue: emptyUserDetail()})
+    const [roles] = createResource(id, () => {return roleClient.getRoles()}, {initialValue: []})
 
-        setRoles(await roleClient.getRoles())
-
-        dispatch(doneWaiting())
-    }, [dispatch])
-
-    const getUser = useCallback(async (): Promise<void> => {
-        if (id === undefined) return
-
-        dispatch(pleaseWait())
-
-        setUser(await userClient.getUser(id))
-
-        dispatch(doneWaiting())
-    }, [dispatch, id])
-
+/*
     useEffect(() => {
         let pageTitle
         let url = '/user'
@@ -62,31 +39,32 @@ const User: FC = () => {
         getRoles()
         getUser()
     }, [id, setPageTitle, dispatch, getRoles, getUser])
+*/
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+    const handleChange =  (event: { target: { name: string; value: any } }, value: any): void => {
         if (event.target.name === 'Password') {
             setPassword(event.target.value)
             return;
         }
 
-        let newUser = { ...user }
+        let newUser = { ...user() }
         newUser[event.target.name as keyof UserDetail] = event.target.value as any
-        setUser(newUser)
+        mutate(newUser)
     }
 
     const upsert = async (): Promise<void> => {
-        dispatch(pleaseWait())
+        // dispatch(pleaseWait())
 
         if (id === undefined) {
-            const newUser: UserNew = { ...user, Password: password }
-            newUser.Roles = selectedRoles
+            const newUser: UserNew = { ...user(), Password: password() }
+            newUser.Roles = selectedRoles()
 
             try {
                 const userDetail = await userClient.insertUser(newUser)
                 navigate(`/user/${userDetail.Guid}`)
             }
             catch (ex: unknown) {
-                dispatch(clearAllWaits())
+                // dispatch(clearAllWaits())
                 if (ex instanceof AxiosError 
                  && ex.response?.status === HTTP_STATUS_CODES.CONFLICT) {
                     // email already exists
@@ -97,13 +75,13 @@ const User: FC = () => {
             }
         }
         else {
-            const newUser = { ...user }
-            newUser.Roles = selectedRoles
+            const newUser = { ...user() }
+            newUser.Roles = selectedRoles()
             
-            setUser(await userClient.updateUser(newUser))
+            mutate(await userClient.updateUser(newUser))
         }
 
-        dispatch(doneWaiting())
+        // dispatch(doneWaiting())
     }
 
     const handleCancel = (): void => {
@@ -111,7 +89,7 @@ const User: FC = () => {
             navigate(-1)
         }
         else {
-            getUser()
+            refetch()
         }
     }
 
@@ -120,15 +98,15 @@ const User: FC = () => {
 
     return (
         <Stack margin={2} spacing={4}>
-            {id !== undefined && <TextField fullWidth label="Id" value={user.Guid} disabled />}
-            <TextField fullWidth label="Display Name" name='DisplayName' onChange={handleChange} value={user.DisplayName} />
-            <TextField fullWidth label="Email" name='Email' onChange={handleChange} value={user.Email} />
-            <TextField fullWidth label="Phone" name='Phone' onChange={handleChange} value={user.Phone} />
+            {id !== undefined && <TextField fullWidth label="Id" value={user().Guid} disabled />}
+            <TextField fullWidth label="Display Name" name='DisplayName' onChange={handleChange} value={user().DisplayName} />
+            <TextField fullWidth label="Email" name='Email' onChange={handleChange} value={user().Email} />
+            <TextField fullWidth label="Phone" name='Phone' onChange={handleChange} value={user().Phone} />
             {id === undefined && <TextField fullWidth label="Password" name='Password' onChange={handleChange} value={password} />}
             <ItemsSelector
                 label="Roles"
                 allItems={roles}
-                initiallySelectedItems={user.Roles}
+                initiallySelectedItems={user().Roles}
                 selected={selectedRoles}
                 setSelected={setSelectedRoles}
             />

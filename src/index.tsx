@@ -13,6 +13,7 @@ import ExampleTwo from './pages/ExampleTwo'
 import Settings from './pages/Settings'
 import { PleaseWait } from './components/PleaseWait'
 import Users from './pages/Users'
+import User from './pages/User'
 
 const root = document.getElementById('root')
 
@@ -33,6 +34,7 @@ render(() => (
                 <Route path="exampletwo" component={ExampleTwo} />
                 <Route path="gridexample" component={GridExample} />
                 <Route path="users" component={Users} />
+                <Route path="user/:id?" component={User} />
                 <Route path="settings" component={Settings} />
             </Route>
             <Route path="*" component={NotFound} />
