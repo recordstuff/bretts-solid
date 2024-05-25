@@ -24,7 +24,7 @@ const Users: Component = () => {
     const [roleFilter, setRoleFilter] = createSignal<JwtRole>(JwtRole.Any)
 
     const fetchUsersState = (): FetchUsersParams => ({page: page(), searchText: searchText(), roleFilter: roleFilter()})
-    const fetchUsers = (params: FetchUsersParams): Promise<PaginationResult<UserSummary>> => userClient.getUsers(page(), PAGE_SIZE, searchText(), roleFilter())
+    const fetchUsers = ({page, searchText, roleFilter}: FetchUsersParams): Promise<PaginationResult<UserSummary>> => userClient.getUsers(page, PAGE_SIZE, searchText, roleFilter)
     const [paginationResult] = createResource(fetchUsersState, fetchUsers, {initialValue: emptyPaginationResult<UserSummary>()})
     
     /*
