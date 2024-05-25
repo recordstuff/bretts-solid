@@ -12,6 +12,7 @@ import GridExample from './pages/GridExample'
 import ExampleTwo from './pages/ExampleTwo'
 import Settings from './pages/Settings'
 import { PleaseWait } from './components/PleaseWait'
+import Users from './pages/Users'
 
 const root = document.getElementById('root')
 
@@ -28,9 +29,10 @@ render(() => (
             <Route path='/login' component={Login} />
             <Route path="/" component={Layout}>
                 <Route path="" component={Home} />
-                <Route path="gridexample" component={GridExample} />
-                <Route path="exampletwo" component={ExampleTwo} />
                 <Route path="baconipsum" component={BaconIpsum} />
+                <Route path="exampletwo" component={ExampleTwo} />
+                <Route path="gridexample" component={GridExample} />
+                <Route path="users" component={Users} />
                 <Route path="settings" component={Settings} />
             </Route>
             <Route path="*" component={NotFound} />

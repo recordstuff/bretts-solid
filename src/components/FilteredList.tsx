@@ -1,29 +1,29 @@
-import { FC, MouseEvent, useState } from 'react';
-import { Box, List, ListItemButton } from '@mui/material';
+import { Box, List, ListItemButton } from '@suid/material';
 import TextFilter from './TextFilter';
 import { NameGuidPair } from '../models/NameGuidPair';
+import { Component, createSignal } from 'solid-js';
 
 export interface Props {
     label: string
     items: NameGuidPair[]
-    handleClick: (event: MouseEvent<HTMLElement>) => void
+    handleClick: (event: MouseEvent) => void
 }
 
-const FilteredList: FC<Props> = ({ label, items, handleClick }) => {
-    const [searchText, setSearchText] = useState('')
+const FilteredList: Component<Props> = ({ label, items, handleClick }) => {
+    const [searchText, setSearchText] = createSignal('')
 
     return (
         <Box>
             <TextFilter
-                label={`Filter ${label}`} searchText={searchText} setSearchText={setSearchText} />
-            <List
-
-            >
+                label={`Filter ${label}`}
+                searchText={searchText}
+                setSearchText={setSearchText}
+            />
+            <List>
                 {items.map((item) => (
-                    (searchText.length === 0 || item.Name.toLowerCase().includes(searchText.toLowerCase()))
+                    (searchText().length === 0 || item.Name.toLowerCase().includes(searchText().toLowerCase()))
                     && <ListItemButton
-                        onClick={handleClick}
-                        key={item.Guid}>
+                        onClick={handleClick}>
                         {item.Name}
                     </ListItemButton>))}
             </List>

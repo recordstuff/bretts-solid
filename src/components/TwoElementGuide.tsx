@@ -1,12 +1,12 @@
-import { FC, ReactNode } from 'react';
-import { Grid, useMediaQuery, useTheme } from '@mui/material';
+import { Grid, useMediaQuery, useTheme } from '@suid/material';
+import { Component, JSX } from 'solid-js';
 
 export interface Props {
-    leftElement: ReactNode
-    rightElement: ReactNode
+    leftElement: JSX.Element
+    rightElement: JSX.Element
 }
 
-const Paginator: FC<Props> = ({ leftElement, rightElement }) => {
+const Paginator: Component<Props> = ({ leftElement, rightElement }) => {
     const theme = useTheme();
     const isXl = useMediaQuery(theme.breakpoints.up('xl'));
     const isMd = useMediaQuery(theme.breakpoints.up('md'));
@@ -14,16 +14,16 @@ const Paginator: FC<Props> = ({ leftElement, rightElement }) => {
     
     let paddingHorizontal = 0
     
-    if (isXl) {
+    if (isXl()) {
         paddingHorizontal = 4
     }
-    else if (isMd) {
+    else if (isMd()) {
         paddingHorizontal = 2
     }
     
     let paddingVertical = 0
     
-    if (isSm) {
+    if (isSm()) {
         paddingVertical = 4
     }
 

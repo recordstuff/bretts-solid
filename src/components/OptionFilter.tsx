@@ -1,19 +1,22 @@
-import { Dispatch, FC, SetStateAction, useEffect, useId } from 'react';
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+//import { Dispatch, FC, SetStateAction, useEffect, useId } from 'react';
+import { FormControl, InputLabel, MenuItem, Select } from '@suid/material';
 import { NameValuePair } from '../models/NameValuePair';
+import { JSX, createUniqueId } from 'solid-js';
+import { SelectChangeEvent } from '@suid/material/Select';
+import { Accessor, Setter } from 'solid-js/types/reactive/signal';
 
 export interface Props<T> {
     label: string,
     options: NameValuePair<T>[],
-    setSelectedValue: Dispatch<SetStateAction<T>>,
-    selectedValue: T,
+    setSelectedValue: Setter<T>,
+    selectedValue: Accessor<T>,
 }
 
-function OptionFilter<T>({ options, label, setSelectedValue, selectedValue }: Props<T>) {
-    const labelId = useId();
+function OptionFilter<T>({ options, label, setSelectedValue, selectedValue }: Props<T>): JSX.Element {
+    const labelId = createUniqueId();
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setSelectedValue(event.target.value as T)
+    const handleChange = (event: SelectChangeEvent<T>) => {
+        setSelectedValue(() => event.target.value)
     }
 
     return (
@@ -23,10 +26,10 @@ function OptionFilter<T>({ options, label, setSelectedValue, selectedValue }: Pr
                 labelId={labelId}
                 label={label}
                 onChange={handleChange}
-                value={`${selectedValue}`}
+                value={`${selectedValue()}`}
             >
-                {options.map((row, index) => (
-                    <MenuItem key={index} value={`${row.Value}`}>{row.Name}</MenuItem>
+                {options.map(row => (
+                    <MenuItem value={`${row.Value}`}>{row.Name}</MenuItem>
                 ))}
             </Select>
         </FormControl>

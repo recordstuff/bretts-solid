@@ -1,52 +1,47 @@
-import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from "react"
-import { Link, useOutletContext } from "react-router-dom"
 import { userClient } from "../services/UserClient"
 import { PaginationResult, emptyPaginationResult } from "../models/PaginationResult"
 import { UserSummary } from "../models/UserSummary"
-import { doneWaiting, pleaseWait } from "../reducers/WaitSpinnerSlice"
-import { firstBreadcrumb } from "../reducers/BreadcrumbsSlice"
-import { useDispatch } from "react-redux"
-import { Grid, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
+import { Grid, IconButton, Link, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@suid/material"
 import OptionFilter from "../components/OptionFilter"
 import { JwtRole } from "../models/Jwt"
-import Paginator from "../components/Paginator"
+//import Paginator from "../components/Paginator"
 import TextFilter from "../components/TextFilter"
 import TwoElementGuide from "../components/TwoElementGuide"
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from '@suid/icons-material/Add';
+import { Component, createResource, createSignal } from "solid-js"
 
 const PAGE_SIZE = 5
 
-const Users: FC = () => {
-    const dispatch = useDispatch()
-    const setPageTitle: Dispatch<SetStateAction<string>> = useOutletContext()
-    const [paginationResult, setPaginationResult] = useState<PaginationResult<UserSummary>>(emptyPaginationResult())
-    const [page, setPage] = useState(1)
-    const [searchText, setSearchText] = useState('')
-    const [roleFilter, setRoleFilter] = useState<JwtRole>(JwtRole.Any)
+interface FetchUsersParams {
+    page: number,
+    searchText: string,
+    roleFilter: JwtRole,
+}
 
-    const getUsers = useCallback(async (): Promise<void> => {
-        dispatch(pleaseWait())
+const Users: Component = () => {
+    const [page, setPage] = createSignal(1)
+    const [searchText, setSearchText] = createSignal('')
+    const [roleFilter, setRoleFilter] = createSignal<JwtRole>(JwtRole.Any)
 
-        const response = await userClient.getUsers(page, PAGE_SIZE, searchText, roleFilter)
-
-        setPaginationResult(response)
-
-        dispatch(doneWaiting())
-    }, [dispatch, page, searchText, roleFilter])
-
+    const fetchUsersState = (): FetchUsersParams => ({page: page(), searchText: searchText(), roleFilter: roleFilter()})
+    const fetchUsers = (params: FetchUsersParams): Promise<PaginationResult<UserSummary>> => userClient.getUsers(page(), PAGE_SIZE, searchText(), roleFilter())
+    const [paginationResult] = createResource(fetchUsersState, fetchUsers, {initialValue: emptyPaginationResult<UserSummary>()})
+    
+    /*
     useEffect(() => {
         setPageTitle('Users')
         dispatch(firstBreadcrumb({title:'Users', url: '/users'}))
         getUsers()
     }, [setPageTitle, dispatch, getUsers])
+*/
 
     return (
         <>
-        <Grid item marginBottom={2} marginLeft={-1} marginTop={1}>
-        <IconButton component={Link} to='/user' sx={{paddingBottom: '-1'}}>
-                <AddIcon/><Typography variant='body2'>Add User</Typography>
-            </IconButton>
-        </Grid>
+            <Grid item marginBottom={2} marginLeft={-1} marginTop={1}>
+                <IconButton component={Link} href='/user' sx={{ paddingBottom: '-1' }}>
+                    <AddIcon /><Typography variant='body2'>Add User</Typography>
+                </IconButton>
+            </Grid>
             <Stack spacing={3}>
                 <TwoElementGuide
                     leftElement={<TextFilter
@@ -72,7 +67,7 @@ const Users: FC = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>
-                                    Id            
+                                    Id
                                 </TableCell>
                                 <TableCell>
                                     Display Name
@@ -83,10 +78,10 @@ const Users: FC = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {paginationResult.Items.map((row, index) => (
-                                <TableRow key={index}>
+                            {paginationResult().Items.map(row => (
+                                <TableRow>
                                     <TableCell>
-                                        <Link to={`/user/${row.Guid}`}>{row.Guid}</Link>
+                                        <Link href={`/user/${row.Guid}`}>{row.Guid}</Link>
                                     </TableCell>
                                     <TableCell>
                                         {row.DisplayName}
@@ -99,10 +94,10 @@ const Users: FC = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Paginator
+                {/* <Paginator
                     paginationResult={paginationResult}
                     setPage={setPage}
-                />
+                        /> */}
             </Stack>
         </>
     )

@@ -1,24 +1,24 @@
-import { Dispatch, FC, SetStateAction, useEffect } from 'react';
-import { Grid, Pagination, TextField, Typography } from '@mui/material';
-import { PaginationResult } from '../models/PaginationResult';
+import { TextField } from '@suid/material';
+import { Accessor, Setter } from 'solid-js/types/reactive/signal';
+import { Component } from 'solid-js';
 
 export interface Props {
     label: string
-    searchText: string
-    setSearchText: Dispatch<SetStateAction<string>>
+    searchText: Accessor<string>
+    setSearchText: Setter<string>
 }
 
-const TextFilter: FC<Props> = ({ label, searchText, setSearchText }) => {
+const TextFilter: Component<Props> = ({ label, searchText, setSearchText }) => {
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: any) => {
         setSearchText(event.target.value);
-      }
+    }
 
     return (
         <TextField
             fullWidth
             label={label}
-            value={searchText}
+            value={searchText()}
             onChange={handleChange}
         />
     )
