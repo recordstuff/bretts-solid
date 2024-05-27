@@ -1,17 +1,19 @@
-import { Component } from "solid-js"
+import { Component, onMount } from "solid-js"
+import { setPageTitle } from "../state/App"
+import { firstBreadcrumb } from "../state/Breadcrumbs"
 
 const Settings: Component = () => {
-/*
-    useEffect(() => {
+
+    onMount(() => {
         setPageTitle('Settings')
-        dispatch(firstBreadcrumb({title:'Settings', url: '/settings'}))
-    }, [setPageTitle])
-  */  
+        firstBreadcrumb({ title: 'Settings', url: '/settings' })
+    })
+
     return (
-    <>
-      <p>Administrators are fancier than average people.</p>
-    </>
-  )
+        <>
+            <p>Administrators are fancier than average people.</p>
+        </>
+    )
 }
 
 export default Settings

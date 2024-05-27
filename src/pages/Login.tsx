@@ -6,6 +6,7 @@ import { AxiosError } from "axios"
 import { userClient } from "../services/UserClient"
 import { Component, createSignal, onMount } from "solid-js"
 import { useNavigate } from "@solidjs/router"
+import { clearAllWaits } from "../state/PleaseWait"
 
 const Login: Component = () => {
 
@@ -20,18 +21,15 @@ const Login: Component = () => {
 
             if (userCredentials().Email.length === 0 || userCredentials().Password.length === 0) return
 
-            // dispatch(pleaseWait())
-
             jwtUtil.token = await userClient.login(userCredentials())
 
-            // dispatch(doneWaiting())
 
             if (!jwtUtil.isExpired) {
                 navigate('/')
             }
         }
         catch (ex: unknown) {
-            // dispatch(clearAllWaits())
+            clearAllWaits()
             if (ex instanceof AxiosError && ex.response?.status === HTTP_STATUS_CODES.UNAUTHORIZED) {
                 setIsInvalidCredentials(true)
                 return
@@ -50,7 +48,7 @@ const Login: Component = () => {
 
     onMount(() => {
         jwtUtil.clear();
-    });
+    })
 
     return (
         <Box component='div' sx={{ display: 'flex' }} justifyContent="center" alignItems="center" minHeight="50vh">

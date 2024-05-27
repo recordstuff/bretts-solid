@@ -1,12 +1,13 @@
-import { Component } from "solid-js"
+import { Component, onMount } from "solid-js"
+import { setPageTitle } from "../state/App"
+import { firstBreadcrumb } from "../state/Breadcrumbs"
 
 const BaconIpsum: Component = () => {
-/*
-    useEffect(() => {
+
+    onMount(() => {
         setPageTitle('Bacon Ipsum')
-        dispatch(firstBreadcrumb({title:'Bacon Ipsum', url: 'baconipsum'}))
-    }, [setPageTitle, dispatch])
-*/
+        firstBreadcrumb({ title: 'Bacon Ipsum', url: 'baconipsum' })
+    })
 
     return (
         <>

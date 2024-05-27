@@ -7,8 +7,11 @@ import { NameGuidPair } from "../models/NameGuidPair"
 import { UserNew } from "../models/UserNew"
 import { AxiosError } from "axios"
 import { HTTP_STATUS_CODES } from "../services/HttpClient"
-import { Component, createResource, createSignal } from "solid-js"
+import { Component, createResource, createSignal, onMount } from "solid-js"
 import { useNavigate, useParams } from "@solidjs/router"
+import { setPageTitle } from "../state/App"
+import { clearAllWaits } from "../state/PleaseWait"
+import { addBreadcrumb } from "../state/Breadcrumbs"
 
 const User: Component = () => {
 
@@ -18,13 +21,12 @@ const User: Component = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [user, {mutate, refetch}] = createResource(id, () => {return userClient.getUser(id)}, {initialValue: emptyUserDetail()})
-    const [roles] = createResource(id, () => {return roleClient.getRoles()}, {initialValue: []})
+    const [user, { mutate, refetch }] = createResource(id, async () => await userClient.getUser(id), { initialValue: emptyUserDetail() })
+    const [roles] = createResource(id, async () => await roleClient.getRoles(), { initialValue: [] })
 
-/*
-    useEffect(() => {
-        let pageTitle
+    onMount(() => {
         let url = '/user'
+        let pageTitle
 
         if (id === undefined) {
             pageTitle = 'Add User'
@@ -35,13 +37,11 @@ const User: Component = () => {
         }
 
         setPageTitle(pageTitle)
-        dispatch(addBreadcrumb({ title: pageTitle, url }))
-        getRoles()
-        getUser()
-    }, [id, setPageTitle, dispatch, getRoles, getUser])
-*/
+        addBreadcrumb({ title: pageTitle, url })
+    })
 
-    const handleChange =  (event: { target: { name: string; value: any } }, value: any): void => {
+
+    const handleChange = (event: { target: { name: string; value: any } }, value: any): void => {
         if (event.target.name === 'Password') {
             setPassword(event.target.value)
             return;
@@ -53,8 +53,6 @@ const User: Component = () => {
     }
 
     const upsert = async (): Promise<void> => {
-        // dispatch(pleaseWait())
-
         if (id === undefined) {
             const newUser: UserNew = { ...user(), Password: password() }
             newUser.Roles = selectedRoles()
@@ -64,24 +62,22 @@ const User: Component = () => {
                 navigate(`/user/${userDetail.Guid}`)
             }
             catch (ex: unknown) {
-                // dispatch(clearAllWaits())
-                if (ex instanceof AxiosError 
-                 && ex.response?.status === HTTP_STATUS_CODES.CONFLICT) {
+                clearAllWaits()
+                if (ex instanceof AxiosError
+                    && ex.response?.status === HTTP_STATUS_CODES.CONFLICT) {
                     // email already exists
                     return
                 }
 
-                throw ex                
+                throw ex
             }
         }
         else {
             const newUser = { ...user() }
             newUser.Roles = selectedRoles()
-            
+
             mutate(await userClient.updateUser(newUser))
         }
-
-        // dispatch(doneWaiting())
     }
 
     const handleCancel = (): void => {

@@ -8,7 +8,9 @@ import { JwtRole } from "../models/Jwt"
 import TextFilter from "../components/TextFilter"
 import TwoElementGuide from "../components/TwoElementGuide"
 import AddIcon from '@suid/icons-material/Add';
-import { Component, createResource, createSignal } from "solid-js"
+import { Component, createResource, createSignal, onMount } from "solid-js"
+import { setPageTitle } from "../state/App"
+import { firstBreadcrumb } from "../state/Breadcrumbs"
 
 const PAGE_SIZE = 5
 
@@ -23,17 +25,14 @@ const Users: Component = () => {
     const [searchText, setSearchText] = createSignal('')
     const [roleFilter, setRoleFilter] = createSignal<JwtRole>(JwtRole.Any)
 
-    const fetchUsersState = (): FetchUsersParams => ({page: page(), searchText: searchText(), roleFilter: roleFilter()})
-    const fetchUsers = ({page, searchText, roleFilter}: FetchUsersParams): Promise<PaginationResult<UserSummary>> => userClient.getUsers(page, PAGE_SIZE, searchText, roleFilter)
-    const [paginationResult] = createResource(fetchUsersState, fetchUsers, {initialValue: emptyPaginationResult<UserSummary>()})
-    
-    /*
-    useEffect(() => {
+    const fetchUsersState = (): FetchUsersParams => ({ page: page(), searchText: searchText(), roleFilter: roleFilter() })
+    const fetchUsers = ({ page, searchText, roleFilter }: FetchUsersParams): Promise<PaginationResult<UserSummary>> => userClient.getUsers(page, PAGE_SIZE, searchText, roleFilter)
+    const [paginationResult] = createResource(fetchUsersState, fetchUsers, { initialValue: emptyPaginationResult<UserSummary>() })
+
+    onMount(() => {
         setPageTitle('Users')
-        dispatch(firstBreadcrumb({title:'Users', url: '/users'}))
-        getUsers()
-    }, [setPageTitle, dispatch, getUsers])
-*/
+        firstBreadcrumb({title:'Users', url: '/users'})
+    })
 
     return (
         <>

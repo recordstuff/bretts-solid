@@ -1,8 +1,7 @@
-import { Accessor, Setter, createSignal, onMount } from 'solid-js/types/reactive/signal';
 import { NameGuidPair } from '../models/NameGuidPair';
 import FilteredList from './FilteredList';
 import { Box, Button, Grid, Stack, Typography } from '@suid/material';
-import { Component } from 'solid-js';
+import { Accessor, Component, Setter, createSignal, onMount } from 'solid-js';
 
 export interface Props {
     allItems: Accessor<NameGuidPair[]>

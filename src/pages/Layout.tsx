@@ -11,6 +11,8 @@ import { JwtField, JwtRole } from "../models/Jwt";
 import { jwtUtil } from "../wrappers/JwtUtil"
 import { Component, createSignal } from "solid-js";
 import { A, RouteSectionProps } from "@solidjs/router";
+import { pageTitle } from "../state/App";
+import { Breadcrumbinator } from "../components/Breadcruminator";
 
 const drawerWidth = 200
 let lastRole = JwtRole.Any
@@ -55,7 +57,6 @@ const menuOptions: MenuOption[] = [
 ]
 
 const Layout: Component<RouteSectionProps> = ({ children }) => {
-    const [pageTitle, setPageTitle] = createSignal('')
 
     return (
         <PrivateRoute>
@@ -91,7 +92,7 @@ const Layout: Component<RouteSectionProps> = ({ children }) => {
                     variant="permanent"
                     anchor="left"
                 >
-                    <List> {/* notice the use of Fragment vs <></> since we need the key property */}
+                    <List>
                         {menuOptions.map((menuOption) => {
                             let component = jwtUtil.hasRole(menuOption.Role) ? (
                                 <>
@@ -106,7 +107,7 @@ const Layout: Component<RouteSectionProps> = ({ children }) => {
                                         </ListItemButton>
                                     </ListItem>
                                 </>
-                            ) : null // fragment shorthand does not work here (listitem key)
+                            ) : null
                             lastRole = menuOption.Role
                             return component
                         })}
@@ -118,7 +119,7 @@ const Layout: Component<RouteSectionProps> = ({ children }) => {
                 >
                     <Stack>
                         <Toolbar />
-                        {/* <Breadcrumbinator />*/}
+                        <Breadcrumbinator />
                         {children}
                     </Stack>
                 </Box>

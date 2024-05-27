@@ -1,12 +1,14 @@
 import { Grid, TextField, Typography } from "@suid/material"
-import { Component } from "solid-js"
+import { Component, onMount } from "solid-js"
+import { setPageTitle } from "../state/App"
+import { firstBreadcrumb } from "../state/Breadcrumbs"
 
 const ExampleTwo: Component = () => {
-/*
-    useEffect(() => {
+
+    onMount(() => {
         setPageTitle('Example Two')
-        dispatch(firstBreadcrumb({title:'Example Two', url: '/exampletwo'}))
-    }, [setPageTitle, dispatch])*/
+        firstBreadcrumb({ title: 'Example Two', url: '/exampletwo' })
+    })
 
     return (
         <>

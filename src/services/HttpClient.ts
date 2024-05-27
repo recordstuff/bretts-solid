@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from "axios"
 import { ENCODED_TOKEN_NAME } from "../models/Jwt"
+import { clearAllWaits, doneWaiting, pleaseWait } from "../state/PleaseWait"
 
 export enum HTTP_STATUS_CODES {
     CONFLICT = 409,
@@ -49,6 +50,8 @@ abstract class HttpBase {
             window.location.href = '/login'
         }
         
+        clearAllWaits()
+
         return Promise.reject(error);
     }
 }
@@ -62,19 +65,31 @@ export abstract class HttpClient extends HttpBase {
     }
 
     protected async get<Response>(url: string, params: any = null): Promise<Response> {
+        pleaseWait()
+
         const response = await this.client.get<Response>(`${this._basePath}/${url}`, {params})
+
+        doneWaiting()
 
         return response.data
     }
 
     protected async post<Body, Response>(url: string, body: Body): Promise<Response> {
+        pleaseWait()
+        
         const response = await this.client.post<Response>(`${this._basePath}/${url}`, body)
+
+        doneWaiting()
 
         return response.data
     }
 
     protected async put<Body, Response>(url: string, body: Body): Promise<Response> {
+        pleaseWait()
+ 
         const response = await this.client.put<Response>(`${this._basePath}/${url}`, body)
+
+        doneWaiting()
 
         return response.data
     }

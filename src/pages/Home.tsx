@@ -1,13 +1,13 @@
-import { Component } from "solid-js"
+import { Component, onMount } from "solid-js"
+import { setPageTitle } from "../state/App"
+import { atHome } from "../state/Breadcrumbs"
 
 const Home: Component = () => {
-/*
-    useEffect(() => {
-        setPageTitle('Home')
-        dispatch(atHome())
-        
-    }, [setPageTitle, dispatch])
-*/
+
+    onMount(() => {
+        setPageTitle('Example Two')
+        atHome()
+    })
 
     return (
         <>
