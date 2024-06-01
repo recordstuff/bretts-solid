@@ -21,8 +21,21 @@ const User: Component = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [user, { mutate, refetch }] = createResource(id, async () => await userClient.getUser(id), { initialValue: emptyUserDetail() })
-    const [roles] = createResource(id, async () => await roleClient.getRoles(), { initialValue: [] })
+
+    const fetchUser = async (): Promise<UserDetail> => {
+        const blah = await userClient.getUser(id)
+
+        return blah
+    }
+
+    const fetchRoles = async (): Promise<NameGuidPair[]> => {
+        const roles = await roleClient.getRoles()
+
+        return roles;
+    }
+
+    const [user, { mutate, refetch }] = createResource(id, fetchUser, { initialValue: emptyUserDetail() })
+    const [roles] = createResource(id, fetchRoles, { initialValue: [] })
 
     onMount(() => {
         let url = '/user'

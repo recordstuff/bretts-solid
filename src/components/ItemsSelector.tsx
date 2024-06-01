@@ -34,12 +34,12 @@ const ItemsSelector: Component<Props> = ({ allItems, initiallySelectedItems, lab
         handleClick(event, selected, setSelected, available, setAvailable)
     }
 
-    const handleClickSelectAll = (event: MouseEvent): void => {
+    const handleClickSelectAll = (): void => {
         setAvailable([])
         setSelected(allItems);
     }
 
-    const handleClickDeselectAll = (event: MouseEvent): void => {
+    const handleClickDeselectAll = (): void => {
         setSelected([]);
         setAvailable(allItems)
     }
