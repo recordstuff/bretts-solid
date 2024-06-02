@@ -23,9 +23,11 @@ const User: Component = () => {
 
 
     const fetchUser = async (): Promise<UserDetail> => {
-        const blah = await userClient.getUser(id)
+        const user = await userClient.getUser(id)
 
-        return blah
+        setSelectedRoles(user.Roles)
+
+        return user
     }
 
     const fetchRoles = async (): Promise<NameGuidPair[]> => {
@@ -56,12 +58,12 @@ const User: Component = () => {
 
     const handleChange = (event: { target: { name: string; value: any } }, value: any): void => {
         if (event.target.name === 'Password') {
-            setPassword(event.target.value)
+            setPassword(value)
             return;
         }
 
         let newUser = { ...user() }
-        newUser[event.target.name as keyof UserDetail] = event.target.value as any
+        newUser[event.target.name as keyof UserDetail] = value
         mutate(newUser)
     }
 
@@ -115,7 +117,6 @@ const User: Component = () => {
             <ItemsSelector
                 label="Roles"
                 allItems={roles}
-                initiallySelectedItems={user().Roles}
                 selected={selectedRoles}
                 setSelected={setSelectedRoles}
             />

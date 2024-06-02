@@ -14,7 +14,6 @@ import Settings from './pages/Settings'
 import { PleaseWait } from './components/PleaseWait'
 import Users from './pages/Users'
 import User from './pages/User'
-import 'solid-devtools'
 
 const root = document.getElementById('root')
 

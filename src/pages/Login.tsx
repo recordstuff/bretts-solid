@@ -42,7 +42,7 @@ const Login: Component = () => {
     const credentialsChanged = (event: { target: { name: string; value: any } }, value: any): void => {
         setIsInvalidCredentials(false)
         let newCreds = { ...userCredentials() }
-        newCreds[event.target.name as keyof UserCredentials] = event.target.value
+        newCreds[event.target.name as keyof UserCredentials] = value
         setUserCredentials(newCreds)
     }
 
