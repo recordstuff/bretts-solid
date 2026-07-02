@@ -1,0 +1,10 @@
+# docker-compose.yml
+ 
+services:
+# Service name is angular-app
+  solidjs-app:
+# build from Dockerfile
+    build: .
+# expose 3003 as hosting port and container port
+    ports:
+    - 3003:3003
