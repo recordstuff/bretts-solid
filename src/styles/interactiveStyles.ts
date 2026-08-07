@@ -12,6 +12,13 @@ export const interactiveLinkStyles = {
     '&:visited': {
         color: 'text.primary',
     },
+    '&.Mui-selected': {
+        bgcolor: 'action.selected',
+        color: 'text.primary',
+        '& .MuiListItemIcon-root, & .MuiTypography-root, & .MuiSvgIcon-root': {
+            color: 'inherit',
+        },
+    },
     '&:hover, &.Mui-selected:hover, &:focus-visible': {
         bgcolor: 'primary.main',
         ...contrastingContent,
@@ -45,5 +52,25 @@ export const mobileMenuButtonStyles = {
         bgcolor: 'primary.dark',
         color: 'primary.contrastText',
         transform: 'scale(0.9)',
+    },
+}
+
+export const cancelButtonStyles = {
+    '&:hover, &:focus-visible': {
+        bgcolor: '#D8C4BE',
+        color: 'text.primary',
+    },
+    '&:active': {
+        bgcolor: 'secondary.light',
+        color: 'text.primary',
+    },
+}
+
+export const deleteButtonStyles = {
+    '&:hover, &:focus-visible': {
+        bgcolor: '#B3261E',
+    },
+    '&:active': {
+        bgcolor: '#8F1712',
     },
 }

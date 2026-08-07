@@ -4,7 +4,7 @@ export const paletteColors = {
     darkest: '#543622',
     primary: '#725444',
     muted: '#8F7265',
-    border: '#C9ADA7',
+    border: '#C0A099',
     background: '#F2E9E4',
     surface: '#FFFDFC',
 } as const

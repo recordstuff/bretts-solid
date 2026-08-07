@@ -12,6 +12,7 @@ import { useNavigate, useParams } from "@solidjs/router"
 import { setPageTitle } from "../state/App"
 import { clearAllWaits } from "../state/PleaseWait"
 import { addBreadcrumb } from "../state/Breadcrumbs"
+import { cancelButtonStyles, deleteButtonStyles } from "../styles/interactiveStyles"
 
 const User: Component = () => {
 
@@ -128,8 +129,8 @@ const User: Component = () => {
             />
             <Stack direction='row' spacing={2}>
                 <Button onClick={upsert} color='primary' variant="contained">{id === undefined ? 'Add' : 'Save'}</Button>
-                <Button color="secondary" onClick={handleCancel}>Cancel</Button>
-                {id !== undefined && <Button variant="contained" color="error" onClick={handleDelete}>Delete</Button>}
+                <Button color="secondary" onClick={handleCancel} sx={cancelButtonStyles}>Cancel</Button>
+                {id !== undefined && <Button variant="contained" color="error" onClick={handleDelete} sx={deleteButtonStyles}>Delete</Button>}
             </Stack>
         </Stack>
     )
