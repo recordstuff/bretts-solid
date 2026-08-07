@@ -63,6 +63,7 @@ const Login: Component = () => {
                         required
                         error={useErrorCondition() && userCredentials().Email.length === 0}
                         helperText={useErrorCondition() && userCredentials().Email.length === 0 && "Email cannot be blank."}
+                        value="adminanduser@brettdrake.org"
                     />
                 </Grid>
                 <Grid item>
@@ -75,6 +76,7 @@ const Login: Component = () => {
                         required
                         error={useErrorCondition() && userCredentials().Password.length === 0}
                         helperText={useErrorCondition() && userCredentials().Password.length === 0 && "Password cannot be blank."}
+                        value="test123"
                     />
                 </Grid>
                 <Grid item>
