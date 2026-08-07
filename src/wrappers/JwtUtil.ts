@@ -25,6 +25,18 @@ class JwtUtil {
         return roles.indexOf(role) >= 0
     }
 
+    public hasMultipleRoles(): boolean {
+        if (this.isExpired) return false
+
+        const rolesStr = sessionStorage.getItem(JwtField.Roles)
+
+        if (rolesStr === null) return false
+
+        const roles: string[] = JSON.parse(rolesStr)
+
+        return roles.length > 1
+    }
+
     public set token(encodedToken: string) {
         try {
             if (encodedToken.length > 0) {

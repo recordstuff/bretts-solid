@@ -1,5 +1,5 @@
 import type { Component } from "solid-js"
-import { JwtRole } from "./Jwt"
+import type { JwtRole } from "./Jwt"
 
 export interface MenuOption {
     Text: string
@@ -8,3 +8,7 @@ export interface MenuOption {
     Role: JwtRole
     ChildRoutes?: string[]
 }
+
+export const divider = Symbol("divider")
+
+export type DrawerMenuItem = MenuOption | typeof divider

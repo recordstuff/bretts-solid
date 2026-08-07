@@ -1,22 +1,25 @@
 import PrivateRoute from "../components/PrivateRoute"
-import { AppBar, Box, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Toolbar, Typography } from "@suid/material"
+import { AppBar, Box, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Toolbar, Typography } from "@suid/material"
 import AgricultureIcon from '@suid/icons-material/Agriculture';
 import HomeIcon from '@suid/icons-material/Home';
+import MenuIcon from '@suid/icons-material/Menu';
 import PeopleIcon from '@suid/icons-material/People';
 import SettingsIcon from '@suid/icons-material/Settings';
 import TableChartIcon from '@suid/icons-material/TableChart';
 import TableRowsIcon from '@suid/icons-material/TableRows';
-import { MenuOption } from "../models/MenuOption";
+import { divider } from "../models/MenuOption";
+import type { DrawerMenuItem, MenuOption } from "../models/MenuOption";
 import { JwtField, JwtRole } from "../models/Jwt";
 import { jwtUtil } from "../wrappers/JwtUtil"
-import { Component } from "solid-js";
-import { A, RouteSectionProps } from "@solidjs/router";
+import { createMemo, createSignal, For, Show } from "solid-js";
+import type { Component } from "solid-js";
+import { A, useLocation } from "@solidjs/router";
+import type { RouteSectionProps } from "@solidjs/router";
 import { pageTitle } from "../state/App";
 import { Breadcrumbinator } from "../components/Breadcruminator";
 
 const drawerWidth = 200
-let lastRole = JwtRole.Any
-const menuOptions: MenuOption[] = [
+const menuOptions: DrawerMenuItem[] = [
     {
         Text: "Home",
         Route: "/",
@@ -41,6 +44,7 @@ const menuOptions: MenuOption[] = [
         Icon: AgricultureIcon,
         Role: JwtRole.User,
     },
+    divider,
     {
         Text: "Users",
         Route: "/users",
@@ -56,7 +60,57 @@ const menuOptions: MenuOption[] = [
     },
 ]
 
-const Layout: Component<RouteSectionProps> = ({ children }) => {
+interface DrawerContentProps {
+    onNavigate: () => void
+    pathname: string
+}
+
+const DrawerContent: Component<DrawerContentProps> = (props) => {
+    const selectedMenuOption = createMemo(() => menuOptions.find((menuItem): menuItem is MenuOption =>
+        menuItem !== divider
+        && (menuItem.Route === props.pathname
+            || menuItem.ChildRoutes?.some(childRoute => props.pathname.startsWith(childRoute)) === true)))
+
+    return (
+        <List>
+            <For each={menuOptions}>
+                {(menuItem) => {
+                    if (menuItem === divider) {
+                        return <Show when={jwtUtil.hasMultipleRoles()}><Divider /></Show>
+                    }
+
+                    return (
+                        <Show when={jwtUtil.hasRole(menuItem.Role)}>
+                            <ListItem disablePadding component={A} href={menuItem.Route}>
+                                <ListItemButton
+                                    onClick={props.onNavigate}
+                                    selected={menuItem === selectedMenuOption()}
+                                >
+                                    <ListItemIcon>
+                                        <menuItem.Icon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={menuItem.Text} />
+                                </ListItemButton>
+                            </ListItem>
+                        </Show>
+                    )
+                }}
+            </For>
+        </List>
+    )
+}
+
+const Layout: Component<RouteSectionProps> = (props) => {
+    const location = useLocation()
+    const [mobileOpen, setMobileOpen] = createSignal(false)
+
+    const handleDrawerToggle = (): void => {
+        setMobileOpen(isOpen => !isOpen)
+    }
+
+    const handleDrawerClose = (): void => {
+        setMobileOpen(false)
+    }
 
     return (
         <PrivateRoute>
@@ -64,11 +118,22 @@ const Layout: Component<RouteSectionProps> = ({ children }) => {
                 <AppBar
                     position="fixed"
                     sx={{
-                        width: `calc(100% - ${drawerWidth}px)`,
-                        ml: `${drawerWidth}px`
+                        ml: { sm: `${drawerWidth}px` },
+                        width: { sm: `calc(100% - ${drawerWidth}px)` },
                     }}
                 >
                     <Toolbar>
+                        <IconButton
+                            aria-controls="mobile-navigation-drawer"
+                            aria-expanded={mobileOpen()}
+                            aria-label="toggle navigation menu"
+                            color="inherit"
+                            edge="start"
+                            onClick={handleDrawerToggle}
+                            sx={{ display: { sm: 'none' }, mr: 2 }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
                         <Typography variant="h6" noWrap component="div">
                             {pageTitle()}
                         </Typography>
@@ -80,39 +145,41 @@ const Layout: Component<RouteSectionProps> = ({ children }) => {
                         </Box>
                     </Toolbar>
                 </AppBar>
-                <Drawer
-                    sx={{
-                        width: drawerWidth,
-                        flexShrink: 0,
-                        '& .MuiDrawer-paper': {
-                            width: drawerWidth,
-                            boxSizing: 'border-box',
-                        },
-                    }}
-                    variant="permanent"
-                    anchor="left"
+                <Box
+                    aria-label="main navigation"
+                    component="nav"
+                    sx={{ flexShrink: { sm: 0 }, width: { sm: drawerWidth } }}
                 >
-                    <List>
-                        {menuOptions.map((menuOption) => {
-                            let component = jwtUtil.hasRole(menuOption.Role) ? (
-                                <>
-                                    {menuOption.Role === JwtRole.Admin && lastRole === JwtRole.User && <Divider />}
-                                    <ListItem disablePadding component={A} href={menuOption.Route}>
-                                        <ListItemButton selected={menuOption.Route === window.location.pathname
-                                            || menuOption.ChildRoutes?.some(cr => window.location.pathname.startsWith(cr))}>
-                                            <ListItemIcon>
-                                                <menuOption.Icon />
-                                            </ListItemIcon>
-                                            <ListItemText primary={menuOption.Text} />
-                                        </ListItemButton>
-                                    </ListItem>
-                                </>
-                            ) : null
-                            lastRole = menuOption.Role
-                            return component
-                        })}
-                    </List>
-                </Drawer>
+                    <Drawer
+                        id="mobile-navigation-drawer"
+                        ModalProps={{ keepMounted: true }}
+                        onClose={handleDrawerClose}
+                        open={mobileOpen()}
+                        sx={{
+                            display: { xs: 'block', sm: 'none' },
+                            '& .MuiDrawer-paper': {
+                                boxSizing: 'border-box',
+                                width: drawerWidth,
+                            },
+                        }}
+                        variant="temporary"
+                    >
+                        <DrawerContent pathname={location.pathname} onNavigate={handleDrawerClose} />
+                    </Drawer>
+                    <Drawer
+                        open
+                        sx={{
+                            display: { xs: 'none', sm: 'block' },
+                            '& .MuiDrawer-paper': {
+                                boxSizing: 'border-box',
+                                width: drawerWidth,
+                            },
+                        }}
+                        variant="permanent"
+                    >
+                        <DrawerContent pathname={location.pathname} onNavigate={handleDrawerClose} />
+                    </Drawer>
+                </Box>
                 <Box
                     component="main"
                     sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
@@ -120,7 +187,7 @@ const Layout: Component<RouteSectionProps> = ({ children }) => {
                     <Stack>
                         <Toolbar />
                         <Breadcrumbinator />
-                        {children}
+                        {props.children}
                     </Stack>
                 </Box>
             </Box>
