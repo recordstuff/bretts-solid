@@ -1,5 +1,5 @@
 import PrivateRoute from "../components/PrivateRoute"
-import { AppBar, Box, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Toolbar, Typography } from "@suid/material"
+import { AppBar, Box, Divider, Drawer, IconButton, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Toolbar, Typography } from "@suid/material"
 import AgricultureIcon from '@suid/icons-material/Agriculture';
 import HomeIcon from '@suid/icons-material/Home';
 import MenuIcon from '@suid/icons-material/Menu';
@@ -141,12 +141,25 @@ const Layout: Component<RouteSectionProps> = (props) => {
                         <Typography variant="h6" noWrap component="div">
                             {pageTitle()}
                         </Typography>
-                        <Box sx={{ marginLeft: 'auto' }}>
-                            {sessionStorage.getItem(JwtField.DisplayName)}
-                            <a href="/login" title='Go back to the login screen.'>
-                                <Typography sx={{ fontSize: '.9em' }}>Logout</Typography>
-                            </a>
-                        </Box>
+                        <Stack
+                            alignItems="flex-start"
+                            spacing={0}
+                            sx={{ flexShrink: 0, marginLeft: 'auto', textAlign: 'left' }}
+                        >
+                            <Typography component="div" sx={{ lineHeight: 1.2 }}>
+                                {sessionStorage.getItem(JwtField.DisplayName)}
+                            </Typography>
+                            <Link
+                                component={A}
+                                href="/login"
+                                color="inherit"
+                                sx={{ fontSize: '.9em', lineHeight: 1.2 }}
+                                title="Go back to the login screen."
+                                underline="hover"
+                            >
+                                Logout
+                            </Link>
+                        </Stack>
                     </Toolbar>
                 </AppBar>
                 <Box

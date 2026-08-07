@@ -1,9 +1,8 @@
-//import { Dispatch, FC, SetStateAction, useEffect, useId } from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@suid/material';
 import { NameValuePair } from '../models/NameValuePair';
-import { JSX, createUniqueId } from 'solid-js';
+import { createUniqueId } from 'solid-js';
+import type { Accessor, JSX, Setter } from 'solid-js';
 import { SelectChangeEvent } from '@suid/material/Select';
-import { Accessor, Setter } from 'solid-js/types/reactive/signal';
 
 export interface Props<T> {
     label: string,
