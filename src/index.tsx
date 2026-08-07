@@ -32,8 +32,17 @@ render(() => (
         <GlobalStyles
             styles={{
                 '::selection': {
-                    bgcolor: 'secondary.light',
-                    color: 'text.primary',
+                    backgroundColor: appTheme.palette.secondary.light,
+                    color: appTheme.palette.text.primary,
+                },
+                '.MuiTableHead-root .MuiTableRow-root': {
+                    backgroundColor: appTheme.palette.action.selected,
+                },
+                '.MuiTableBody-root .MuiTableRow-root:nth-of-type(odd)': {
+                    backgroundColor: appTheme.palette.action.hover,
+                },
+                '.MuiTableBody-root .MuiTableRow-root:nth-of-type(even)': {
+                    backgroundColor: appTheme.palette.background.paper,
                 },
             }}
         />
