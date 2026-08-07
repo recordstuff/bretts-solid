@@ -1,7 +1,7 @@
 import { userClient } from "../services/UserClient"
 import { PaginationResult, emptyPaginationResult } from "../models/PaginationResult"
 import { UserSummary } from "../models/UserSummary"
-import { Grid, IconButton, Link, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@suid/material"
+import { Button, Grid, Link, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@suid/material"
 import OptionFilter from "../components/OptionFilter"
 import { JwtRole } from "../models/Jwt"
 import Paginator from "../components/Paginator"
@@ -11,6 +11,8 @@ import AddIcon from '@suid/icons-material/Add';
 import { Component, createResource, createSignal, onMount } from "solid-js"
 import { setPageTitle } from "../state/App"
 import { firstBreadcrumb } from "../state/Breadcrumbs"
+import { A } from "@solidjs/router"
+import { cancelButtonStyles } from "../styles/interactiveStyles"
 
 const PAGE_SIZE = 5
 
@@ -37,9 +39,15 @@ const Users: Component = () => {
     return (
         <>
             <Grid item marginBottom={2} marginLeft={-1} marginTop={1}>
-                <IconButton component={Link} href='/user' sx={{ paddingBottom: '-1' }}>
-                    <AddIcon /><Typography variant='body2'>Add User</Typography>
-                </IconButton>
+                <Button
+                    color="secondary"
+                    component={A}
+                    href="/user"
+                    startIcon={<AddIcon />}
+                    sx={cancelButtonStyles}
+                >
+                    Add User
+                </Button>
             </Grid>
             <Stack spacing={3}>
                 <TwoElementGuide

@@ -66,6 +66,27 @@ export const cancelButtonStyles = {
     },
 }
 
+export const logoutLinkStyles = {
+    color: 'inherit',
+    fontSize: '.9em',
+    lineHeight: 1.2,
+    textDecoration: 'none',
+    transition: 'color 120ms ease',
+    '&:visited': {
+        color: 'inherit',
+    },
+    '&:hover, &:focus-visible': {
+        color: 'background.default',
+        fontWeight: 700,
+        textDecoration: 'none',
+    },
+    '&:active': {
+        color: '#E3D2CD',
+        fontWeight: 700,
+        textDecoration: 'none',
+    },
+}
+
 export const deleteButtonStyles = {
     '&:hover, &:focus-visible': {
         bgcolor: '#B3261E',
