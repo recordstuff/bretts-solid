@@ -17,7 +17,7 @@ import { A, useLocation } from "@solidjs/router";
 import type { RouteSectionProps } from "@solidjs/router";
 import { pageTitle } from "../state/App";
 import { Breadcrumbinator } from "../components/Breadcruminator";
-import { interactiveLinkStyles, mobileMenuButtonStyles } from "../styles/interactiveStyles";
+import { interactiveLinkStyles, logoutLinkStyles, mobileMenuButtonStyles } from "../styles/interactiveStyles";
 
 const drawerWidth = 200
 const menuOptions: DrawerMenuItem[] = [
@@ -153,9 +153,9 @@ const Layout: Component<RouteSectionProps> = (props) => {
                                 component={A}
                                 href="/login"
                                 color="inherit"
-                                sx={{ fontSize: '.9em', lineHeight: 1.2 }}
+                                sx={logoutLinkStyles}
                                 title="Go back to the login screen."
-                                underline="hover"
+                                underline="none"
                             >
                                 Logout
                             </Link>
