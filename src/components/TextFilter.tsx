@@ -1,6 +1,5 @@
 import { TextField } from '@suid/material';
-import { Accessor, Setter } from 'solid-js/types/reactive/signal';
-import { Component } from 'solid-js';
+import type { Accessor, Component, Setter } from 'solid-js';
 
 export interface Props {
     label: string
