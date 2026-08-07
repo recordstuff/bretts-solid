@@ -1,33 +1,27 @@
-
-//import { Grid, Pagination, Typography } from '@suid/material';
-import { Grid, Typography } from '@suid/material';
-import { PaginationResult } from '../models/PaginationResult';
-import { Component } from 'solid-js';
+import { Grid, Pagination, Typography } from '@suid/material'
+import type { PaginationResult } from '../models/PaginationResult'
+import type { Component, Setter } from 'solid-js'
 
 export interface Props {
-    paginationResult: PaginationResult<Object>
-    // setPage: Dispatch<SetStateAction<number>>
+    paginationResult: PaginationResult<unknown>
+    setPage: Setter<number>
 }
 
-const Paginator: Component<Props> = ({ paginationResult /* , setPage */ }) => {
-/*
-    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        setPage(value)
-    }
-*/
+const Paginator: Component<Props> = (props) => {
     return (
         <Grid container direction='column' alignItems='center'>
             <Grid item>
-                <Typography>Page {paginationResult.Page} of {paginationResult.PageCount}</Typography>
+                <Typography>Page {props.paginationResult.Page} of {props.paginationResult.PageCount}</Typography>
             </Grid>
-            {/* <Grid item paddingTop={2}>
+            <Grid item paddingTop={2}>
                 <Pagination
-                    count={paginationResult.PageCount}
+                    count={props.paginationResult.PageCount}
+                    page={Math.max(1, props.paginationResult.Page)}
                     showFirstButton
                     showLastButton
-                    onChange={handleChange}
+                    onChange={(_, value) => props.setPage(value)}
                 />
-    </Grid>*/}
+            </Grid>
         </Grid>
     )
 }

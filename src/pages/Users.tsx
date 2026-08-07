@@ -4,7 +4,7 @@ import { UserSummary } from "../models/UserSummary"
 import { Grid, IconButton, Link, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@suid/material"
 import OptionFilter from "../components/OptionFilter"
 import { JwtRole } from "../models/Jwt"
-//import Paginator from "../components/Paginator"
+import Paginator from "../components/Paginator"
 import TextFilter from "../components/TextFilter"
 import TwoElementGuide from "../components/TwoElementGuide"
 import AddIcon from '@suid/icons-material/Add';
@@ -93,10 +93,10 @@ const Users: Component = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {/* <Paginator
-                    paginationResult={paginationResult}
+                <Paginator
+                    paginationResult={paginationResult()}
                     setPage={setPage}
-                        /> */}
+                />
             </Stack>
         </>
     )
