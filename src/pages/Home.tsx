@@ -1,23 +1,100 @@
-import { Component, onMount } from "solid-js"
-import { setPageTitle } from "../state/App"
-import { atHome } from "../state/Breadcrumbs"
+import AgricultureIcon from '@suid/icons-material/Agriculture'
+import PeopleIcon from '@suid/icons-material/People'
+import SettingsIcon from '@suid/icons-material/Settings'
+import TableChartIcon from '@suid/icons-material/TableChart'
+import TableRowsIcon from '@suid/icons-material/TableRows'
+import { Card, CardActionArea, Stack, Typography } from '@suid/material'
+import { A } from '@solidjs/router'
+import { onMount } from 'solid-js'
+import type { Component, JSX } from 'solid-js'
+import { setPageTitle } from '../state/App'
+
+interface OptionCardProps {
+    children: JSX.Element
+    featured?: boolean
+    href: string
+}
+
+const OptionCard: Component<OptionCardProps> = (props) => (
+    <Card
+        variant="outlined"
+        sx={props.featured ? { borderColor: 'primary.main', borderWidth: 2 } : undefined}
+    >
+        <CardActionArea
+            component={A}
+            href={props.href}
+            sx={{ p: props.featured ? 3 : 2 }}
+        >
+            {props.children}
+        </CardActionArea>
+    </Card>
+)
 
 const Home: Component = () => {
-
     onMount(() => {
-        setPageTitle('Example Two')
-        atHome()
+        setPageTitle('Home')
     })
 
     return (
-        <>
-            <p>Home is where the heart is.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tristique senectus et netus et malesuada fames. Pellentesque massa placerat duis ultricies. Montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada. Phasellus faucibus scelerisque eleifend donec pretium vulputate sapien nec. Pellentesque massa placerat duis ultricies. In metus vulputate eu scelerisque felis. Vulputate sapien nec sagittis aliquam malesuada bibendum. Egestas maecenas pharetra convallis posuere morbi. Dictum sit amet justo donec enim diam. Vestibulum lorem sed risus ultricies tristique nulla aliquet enim tortor. Id neque aliquam vestibulum morbi. Dolor sed viverra ipsum nunc aliquet bibendum. Amet volutpat consequat mauris nunc congue nisi vitae suscipit tellus. Morbi enim nunc faucibus a pellentesque sit. Integer enim neque volutpat ac tincidunt vitae semper quis.</p>
-            <p>Mauris ultrices eros in cursus turpis massa tincidunt dui ut. Fames ac turpis egestas integer. Ut sem viverra aliquet eget sit. Eget lorem dolor sed viverra ipsum nunc. Ut tortor pretium viverra suspendisse. Blandit aliquam etiam erat velit scelerisque in dictum non consectetur. Tincidunt vitae semper quis lectus. Risus viverra adipiscing at in tellus. Cras pulvinar mattis nunc sed. Consequat id porta nibh venenatis. Gravida arcu ac tortor dignissim convallis aenean. Pellentesque massa placerat duis ultricies lacus sed turpis tincidunt id. Mattis ullamcorper velit sed ullamcorper morbi. Sollicitudin aliquam ultrices sagittis orci a scelerisque purus semper eget. Tristique nulla aliquet enim tortor at. Amet mauris commodo quis imperdiet massa tincidunt nunc pulvinar sapien.</p>
-            <p>Eu sem integer vitae justo eget magna fermentum. Mauris ultrices eros in cursus turpis massa. Cursus risus at ultrices mi tempus imperdiet nulla malesuada pellentesque. Montes nascetur ridiculus mus mauris vitae ultricies leo. Nisl suscipit adipiscing bibendum est ultricies integer quis auctor. Neque egestas congue quisque egestas diam in arcu cursus euismod. Et odio pellentesque diam volutpat commodo. At risus viverra adipiscing at in tellus integer feugiat. Arcu vitae elementum curabitur vitae nunc sed velit dignissim. Et tortor consequat id porta nibh venenatis cras. Mi quis hendrerit dolor magna. Tristique senectus et netus et malesuada fames ac. Quis ipsum suspendisse ultrices gravida dictum fusce ut. Aliquet risus feugiat in ante metus dictum at. Placerat orci nulla pellentesque dignissim enim sit amet venenatis urna. Lacus laoreet non curabitur gravida arcu ac tortor.</p>
-            <p>Interdum velit laoreet id donec ultrices tincidunt. Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Convallis a cras semper auctor neque. Adipiscing commodo elit at imperdiet dui. In ante metus dictum at tempor commodo ullamcorper a lacus. Integer malesuada nunc vel risus commodo viverra maecenas accumsan. Sit amet dictum sit amet. At tempor commodo ullamcorper a lacus vestibulum sed arcu. Morbi non arcu risus quis varius quam quisque id. Quis enim lobortis scelerisque fermentum dui faucibus in ornare quam. Id porta nibh venenatis cras sed felis eget. Auctor augue mauris augue neque gravida in fermentum et. Aenean euismod elementum nisi quis eleifend quam adipiscing vitae. Suspendisse sed nisi lacus sed. Arcu dictum varius duis at consectetur lorem donec massa. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus vel.</p>
-            <p>Orci porta non pulvinar neque laoreet suspendisse interdum consectetur. Risus viverra adipiscing at in tellus integer. Ultrices in iaculis nunc sed augue lacus viverra vitae. Cum sociis natoque penatibus et magnis dis. Consectetur lorem donec massa sapien faucibus et molestie ac feugiat. Nisl rhoncus mattis rhoncus urna neque. Egestas pretium aenean pharetra magna ac. In eu mi bibendum neque egestas congue quisque egestas. Nec feugiat in fermentum posuere urna nec tincidunt praesent semper. Gravida cum sociis natoque penatibus et magnis dis parturient montes. Gravida in fermentum et sollicitudin ac.</p>
-        </>
+        <Stack spacing={3}>
+            <div>
+                <Typography variant="h5" gutterBottom>Project options</Typography>
+                <Typography>
+                    Use the menu to explore examples of common application layouts and, if you are an administrator, manage users and settings.
+                </Typography>
+            </div>
+
+            <OptionCard href="/gridexample">
+                <Stack direction="row" spacing={1} alignItems="center" mb={1}>
+                    <TableRowsIcon />
+                    <Typography variant="h6">Grid Example</Typography>
+                </Stack>
+                <Typography>
+                    Contains two groups of fields: Contact and Address. They appear side by side on larger screens, then move into one column on smaller screens with Contact first and Address below it.
+                </Typography>
+            </OptionCard>
+
+            <OptionCard href="/exampletwo">
+                <Stack direction="row" spacing={1} alignItems="center" mb={1}>
+                    <TableChartIcon />
+                    <Typography variant="h6">Example Two</Typography>
+                </Stack>
+                <Typography>
+                    Shows a different responsive two-column pattern. Instead of moving whole field groups like Grid Example, its individual fields flow from two columns into a single column as the screen narrows.
+                </Typography>
+            </OptionCard>
+
+            <OptionCard href="/baconipsum">
+                <Stack direction="row" spacing={1} alignItems="center" mb={1}>
+                    <AgricultureIcon />
+                    <Typography variant="h6">Bacon Ipsum</Typography>
+                </Stack>
+                <Typography>
+                    A placeholder page for now. Its sample text keeps the navigation route and application layout represented until this area is replaced with a functional feature.
+                </Typography>
+            </OptionCard>
+
+            <OptionCard featured href="/users">
+                <Typography color="primary" variant="overline">Featured working example</Typography>
+                <Stack direction="row" spacing={1} alignItems="center" mb={1}>
+                    <PeopleIcon color="primary" />
+                    <Typography variant="h5">Users</Typography>
+                </Stack>
+                <Typography>
+                    The project's most complete working feature manages real user data through a full set of CRUD operations. Administrators can search and filter users, create accounts, edit user details and role assignments, and delete users.
+                </Typography>
+            </OptionCard>
+
+            <OptionCard href="/settings">
+                <Stack direction="row" spacing={1} alignItems="center" mb={1}>
+                    <SettingsIcon />
+                    <Typography variant="h6">Settings</Typography>
+                </Stack>
+                <Typography>
+                    An administrator-only placeholder for now. It reserves a location for future application-level configuration, but it does not currently provide working settings.
+                </Typography>
+            </OptionCard>
+        </Stack>
     )
 }
 
