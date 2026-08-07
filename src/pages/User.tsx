@@ -23,6 +23,8 @@ const User: Component = () => {
 
 
     const fetchUser = async (): Promise<UserDetail> => {
+        if (id === undefined) return emptyUserDetail()
+
         const user = await userClient.getUser(id)
 
         setSelectedRoles(user.Roles)
