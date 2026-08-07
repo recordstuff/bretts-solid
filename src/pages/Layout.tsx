@@ -141,19 +141,25 @@ const Layout: Component<RouteSectionProps> = (props) => {
                         <Typography variant="h6" noWrap component="div">
                             {pageTitle()}
                         </Typography>
-                        <Box sx={{ marginLeft: 'auto' }}>
-                            {sessionStorage.getItem(JwtField.DisplayName)}
+                        <Stack
+                            alignItems="flex-start"
+                            spacing={0}
+                            sx={{ flexShrink: 0, marginLeft: 'auto', textAlign: 'left' }}
+                        >
+                            <Typography component="div" sx={{ lineHeight: 1.2 }}>
+                                {sessionStorage.getItem(JwtField.DisplayName)}
+                            </Typography>
                             <Link
                                 component={A}
                                 href="/login"
                                 color="inherit"
-                                sx={{ fontSize: '.9em' }}
+                                sx={{ fontSize: '.9em', lineHeight: 1.2 }}
                                 title="Go back to the login screen."
                                 underline="hover"
                             >
                                 Logout
                             </Link>
-                        </Box>
+                        </Stack>
                     </Toolbar>
                 </AppBar>
                 <Box
