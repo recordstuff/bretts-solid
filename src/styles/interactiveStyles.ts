@@ -54,3 +54,23 @@ export const mobileMenuButtonStyles = {
         transform: 'scale(0.9)',
     },
 }
+
+export const cancelButtonStyles = {
+    '&:hover, &:focus-visible': {
+        bgcolor: '#D8C4BE',
+        color: 'text.primary',
+    },
+    '&:active': {
+        bgcolor: 'secondary.light',
+        color: 'text.primary',
+    },
+}
+
+export const deleteButtonStyles = {
+    '&:hover, &:focus-visible': {
+        bgcolor: '#B3261E',
+    },
+    '&:active': {
+        bgcolor: '#8F1712',
+    },
+}
