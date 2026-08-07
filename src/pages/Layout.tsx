@@ -9,7 +9,7 @@ import TableRowsIcon from '@suid/icons-material/TableRows';
 import { MenuOption } from "../models/MenuOption";
 import { JwtField, JwtRole } from "../models/Jwt";
 import { jwtUtil } from "../wrappers/JwtUtil"
-import { Component, createSignal } from "solid-js";
+import { Component } from "solid-js";
 import { A, RouteSectionProps } from "@solidjs/router";
 import { pageTitle } from "../state/App";
 import { Breadcrumbinator } from "../components/Breadcruminator";
@@ -73,7 +73,7 @@ const Layout: Component<RouteSectionProps> = ({ children }) => {
                             {pageTitle()}
                         </Typography>
                         <Box sx={{ marginLeft: 'auto' }}>
-                            {localStorage.getItem(JwtField.DisplayName)}
+                            {sessionStorage.getItem(JwtField.DisplayName)}
                             <a href="/login" title='Go back to the login screen.'>
                                 <Typography sx={{ fontSize: '.9em' }}>Logout</Typography>
                             </a>

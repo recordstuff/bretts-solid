@@ -37,7 +37,7 @@ const User: Component = () => {
     }
 
     const [user, { mutate, refetch }] = createResource(id, fetchUser, { initialValue: emptyUserDetail() })
-    const [roles] = createResource(id, fetchRoles, { initialValue: [] })
+    const [roles] = createResource(fetchRoles, { initialValue: [] })
 
     onMount(() => {
         let url = '/user'
@@ -104,7 +104,11 @@ const User: Component = () => {
         }
     }
 
-    const handleDelete = (): void => {
+    const handleDelete = async (): Promise<void> => {
+        if (id === undefined) return
+
+        await userClient.deleteUser(id)
+        navigate(-1)
     }
 
     return (
@@ -113,7 +117,7 @@ const User: Component = () => {
             <TextField fullWidth label="Display Name" name='DisplayName' onChange={handleChange} value={user().DisplayName} />
             <TextField fullWidth label="Email" name='Email' onChange={handleChange} value={user().Email} />
             <TextField fullWidth label="Phone" name='Phone' onChange={handleChange} value={user().Phone} />
-            {id === undefined && <TextField fullWidth label="Password" name='Password' onChange={handleChange} value={password} />}
+            {id === undefined && <TextField fullWidth label="Password" name='Password' onChange={handleChange} value={password()} />}
             <ItemsSelector
                 label="Roles"
                 allItems={roles}

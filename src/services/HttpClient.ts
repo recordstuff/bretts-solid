@@ -36,7 +36,7 @@ abstract class HttpBase {
     }
 
     private injectToken(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
-        const token = localStorage.getItem(ENCODED_TOKEN_NAME)
+        const token = sessionStorage.getItem(ENCODED_TOKEN_NAME)
 
         if (token && config?.headers) {
             config.headers.Authorization = `Bearer ${token}`
@@ -64,7 +64,7 @@ export abstract class HttpClient extends HttpBase {
         this._basePath = basePath
     }
 
-    protected async get<Response>(url: string, params: any = null): Promise<Response> {
+    protected async get<Response>(url: string, params: object | null = null): Promise<Response> {
         pleaseWait()
 
         const response = await this.client.get<Response>(`${this._basePath}/${url}`, {params})
@@ -88,6 +88,16 @@ export abstract class HttpClient extends HttpBase {
         pleaseWait()
  
         const response = await this.client.put<Response>(`${this._basePath}/${url}`, body)
+
+        doneWaiting()
+
+        return response.data
+    }
+
+    protected async delete<Response>(url: string): Promise<Response> {
+        pleaseWait()
+
+        const response = await this.client.delete<Response>(`${this._basePath}/${url}`)
 
         doneWaiting()
 

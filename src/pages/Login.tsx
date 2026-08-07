@@ -1,4 +1,4 @@
-import { Box, Button, Grid, /* Snackbar, */ TextField } from "@suid/material"
+import { Box, Button, ButtonGroup, Grid, TextField } from "@suid/material"
 import { HTTP_STATUS_CODES } from "../services/HttpClient"
 import { jwtUtil } from "../wrappers/JwtUtil"
 import { defaultUserCredentials, UserCredentials } from "../models/UserCredentials"
@@ -7,6 +7,7 @@ import { userClient } from "../services/UserClient"
 import { Component, createSignal, onMount } from "solid-js"
 import { useNavigate } from "@solidjs/router"
 import { clearAllWaits } from "../state/PleaseWait"
+import Snackbar from "../components/Snackbar"
 
 const Login: Component = () => {
 
@@ -21,8 +22,8 @@ const Login: Component = () => {
 
             if (userCredentials().Email.length === 0 || userCredentials().Password.length === 0) return
 
-            jwtUtil.token = await userClient.login(userCredentials())
-
+            const result = await userClient.login(userCredentials())
+            jwtUtil.token = result.Token
 
             if (!jwtUtil.isExpired) {
                 navigate('/')
@@ -46,6 +47,11 @@ const Login: Component = () => {
         setUserCredentials(newCreds)
     }
 
+    const populateCredentials = (credentials: UserCredentials): void => {
+        setIsInvalidCredentials(false)
+        setUserCredentials(credentials)
+    }
+
     onMount(() => {
         jwtUtil.clear();
     })
@@ -53,6 +59,16 @@ const Login: Component = () => {
     return (
         <Box component='div' sx={{ display: 'flex' }} justifyContent="center" alignItems="center" minHeight="50vh">
             <Grid item lg={4} container direction="column" margin={2} spacing={2}>
+                <Grid item>
+                    This is a SolidJS sample. Log in with Admin and User rights to see all options, including Users CRUD operations.
+                </Grid>
+                <Grid item sx={{ textAlign: 'center' }}>
+                    <ButtonGroup variant="text" aria-label="Populate with Credentials">
+                        <Button onClick={() => populateCredentials(defaultUserCredentials())}>Admin and User rights</Button>
+                        <Button onClick={() => populateCredentials({ Email: 'adminonly@brettdrake.org', Password: 'test123' })}>Admin rights only</Button>
+                        <Button onClick={() => populateCredentials({ Email: 'useronly@brettdrake.org', Password: 'test123' })}>User rights only</Button>
+                    </ButtonGroup>
+                </Grid>
                 <Grid item>
                     <TextField
                         fullWidth
@@ -63,7 +79,7 @@ const Login: Component = () => {
                         required
                         error={useErrorCondition() && userCredentials().Email.length === 0}
                         helperText={useErrorCondition() && userCredentials().Email.length === 0 && "Email cannot be blank."}
-                        value="adminanduser@brettdrake.org"
+                        value={userCredentials().Email}
                     />
                 </Grid>
                 <Grid item>
@@ -76,7 +92,7 @@ const Login: Component = () => {
                         required
                         error={useErrorCondition() && userCredentials().Password.length === 0}
                         helperText={useErrorCondition() && userCredentials().Password.length === 0 && "Password cannot be blank."}
-                        value="test123"
+                        value={userCredentials().Password}
                     />
                 </Grid>
                 <Grid item>
@@ -89,12 +105,12 @@ const Login: Component = () => {
                         Login
                     </Button>
                 </Grid>
-{/*                <Snackbar
-                    open={isInvalidCredentials}
-                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                <Snackbar
+                    open={isInvalidCredentials()}
                     autoHideDuration={3000}
                     message="The Email or Password was incorrect."
-    />                */}
+                    onClose={() => setIsInvalidCredentials(false)}
+                />
             </Grid>
         </Box>
     )
