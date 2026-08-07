@@ -5,14 +5,15 @@ import { UserCredentials } from "../models/UserCredentials";
 import { HttpClient } from "./HttpClient";
 import { UserDetail } from "../models/UserDetail";
 import { UserNew } from "../models/UserNew";
+import { LoginSession } from "../models/LoginSession";
 
 class UserClient extends HttpClient {
     constructor() {
         super('user')
     }
 
-    public login(userCredentials: UserCredentials): Promise<string> {
-        return this.post<UserCredentials, string>('login', userCredentials)
+    public login(userCredentials: UserCredentials): Promise<LoginSession> {
+        return this.post<UserCredentials, LoginSession>('login', userCredentials)
     }
 
     public getUsers(
@@ -34,6 +35,10 @@ class UserClient extends HttpClient {
 
     public insertUser(userNew: UserNew): Promise<UserDetail> {
         return this.post<UserNew, UserDetail>('insert', userNew)
+    }
+
+    public deleteUser(id: string): Promise<boolean> {
+        return this.delete<boolean>(`delete/${id}`)
     }
 }
 
