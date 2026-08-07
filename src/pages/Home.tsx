@@ -8,6 +8,7 @@ import { A } from '@solidjs/router'
 import { onMount } from 'solid-js'
 import type { Component, JSX } from 'solid-js'
 import { setPageTitle } from '../state/App'
+import { interactiveLinkStyles } from '../styles/interactiveStyles'
 
 interface OptionCardProps {
     children: JSX.Element
@@ -24,20 +25,8 @@ const OptionCard: Component<OptionCardProps> = (props) => (
             component={A}
             href={props.href}
             sx={{
+                ...interactiveLinkStyles,
                 p: props.featured ? 3 : 2,
-                color: 'text.primary',
-                textDecoration: 'none',
-                transition: 'background-color 120ms ease, transform 80ms ease',
-                '&:visited': {
-                    color: 'text.primary',
-                },
-                '&:hover': {
-                    bgcolor: 'action.hover',
-                },
-                '&:active': {
-                    bgcolor: 'action.selected',
-                    transform: 'scale(0.995)',
-                },
             }}
         >
             {props.children}
