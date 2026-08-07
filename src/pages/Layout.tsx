@@ -17,6 +17,7 @@ import { A, useLocation } from "@solidjs/router";
 import type { RouteSectionProps } from "@solidjs/router";
 import { pageTitle } from "../state/App";
 import { Breadcrumbinator } from "../components/Breadcruminator";
+import { interactiveLinkStyles, mobileMenuButtonStyles } from "../styles/interactiveStyles";
 
 const drawerWidth = 200
 const menuOptions: DrawerMenuItem[] = [
@@ -87,21 +88,7 @@ const DrawerContent: Component<DrawerContentProps> = (props) => {
                                     href={menuItem.Route}
                                     onClick={props.onNavigate}
                                     selected={menuItem === selectedMenuOption()}
-                                    sx={{
-                                        color: 'text.primary',
-                                        textDecoration: 'none',
-                                        transition: 'background-color 120ms ease, transform 80ms ease',
-                                        '&:visited': {
-                                            color: 'text.primary',
-                                        },
-                                        '&:hover': {
-                                            bgcolor: 'action.hover',
-                                        },
-                                        '&:active': {
-                                            bgcolor: 'action.selected',
-                                            transform: 'scale(0.98)',
-                                        },
-                                    }}
+                                    sx={interactiveLinkStyles}
                                 >
                                     <ListItemIcon>
                                         <menuItem.Icon />
@@ -147,7 +134,7 @@ const Layout: Component<RouteSectionProps> = (props) => {
                             color="inherit"
                             edge="start"
                             onClick={handleDrawerToggle}
-                            sx={{ display: { sm: 'none' }, mr: 2 }}
+                            sx={mobileMenuButtonStyles}
                         >
                             <MenuIcon />
                         </IconButton>
