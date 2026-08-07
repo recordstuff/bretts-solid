@@ -1,5 +1,5 @@
 import PrivateRoute from "../components/PrivateRoute"
-import { AppBar, Box, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Toolbar, Typography } from "@suid/material"
+import { AppBar, Box, Divider, Drawer, IconButton, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Toolbar, Typography } from "@suid/material"
 import AgricultureIcon from '@suid/icons-material/Agriculture';
 import HomeIcon from '@suid/icons-material/Home';
 import MenuIcon from '@suid/icons-material/Menu';
@@ -143,9 +143,16 @@ const Layout: Component<RouteSectionProps> = (props) => {
                         </Typography>
                         <Box sx={{ marginLeft: 'auto' }}>
                             {sessionStorage.getItem(JwtField.DisplayName)}
-                            <a href="/login" title='Go back to the login screen.'>
-                                <Typography sx={{ fontSize: '.9em' }}>Logout</Typography>
-                            </a>
+                            <Link
+                                component={A}
+                                href="/login"
+                                color="inherit"
+                                sx={{ fontSize: '.9em' }}
+                                title="Go back to the login screen."
+                                underline="hover"
+                            >
+                                Logout
+                            </Link>
                         </Box>
                     </Toolbar>
                 </AppBar>

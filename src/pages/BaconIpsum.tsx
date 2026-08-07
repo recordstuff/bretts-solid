@@ -1,6 +1,7 @@
 import { Component, onMount } from "solid-js"
 import { setPageTitle } from "../state/App"
 import { firstBreadcrumb } from "../state/Breadcrumbs"
+import { Link } from "@suid/material"
 
 const BaconIpsum: Component = () => {
 
@@ -12,7 +13,7 @@ const BaconIpsum: Component = () => {
     return (
         <>
             <p>
-                <a href='https://baconipsum.com/?paras=5&type=meat-and-filler&start-with-lorem=1' target="_blank" rel="noreferrer">Bacon ipsum</a> dolor amet jowl drumstick ground round venison alcatra.  Pork loin capicola shoulder swine alcatra. Bresaola hamburger swine, brisket rump capicola  beef ribs landjaeger tail prosciutto turkey tenderloin pastrami beef. T-bone andouille cupim, salami buffalo burgdoggen flank swine pork capicola meatloaf sirloin rump. Buffalo short loin burgdoggen doner porchetta fatback spare ribs ground round pastrami t-bone chislic.
+                <Link href='https://baconipsum.com/?paras=5&type=meat-and-filler&start-with-lorem=1' target="_blank" rel="noreferrer">Bacon ipsum</Link> dolor amet jowl drumstick ground round venison alcatra.  Pork loin capicola shoulder swine alcatra. Bresaola hamburger swine, brisket rump capicola  beef ribs landjaeger tail prosciutto turkey tenderloin pastrami beef. T-bone andouille cupim, salami buffalo burgdoggen flank swine pork capicola meatloaf sirloin rump. Buffalo short loin burgdoggen doner porchetta fatback spare ribs ground round pastrami t-bone chislic.
             </p>
             <p>
                 Cupim pork belly ribeye, turducken bacon shank pork loin salami. Porchetta drumstick pancetta shankle chuck. Turkey flank strip steak, jerky capicola pork loin chislic swine t-bone drumstick filet mignon pancetta short loin shank buffalo. Pastrami kielbasa strip steak short loin, cupim pork belly ham hock chuck ground round. Strip steak short loin porchetta, spare ribs pastrami sausage pork belly chicken burgdoggen pork chop biltong. Boudin jowl jerky beef porchetta drumstick buffalo hamburger ribeye brisket tenderloin meatloaf.

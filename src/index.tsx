@@ -14,6 +14,9 @@ import Settings from './pages/Settings'
 import { PleaseWait } from './components/PleaseWait'
 import Users from './pages/Users'
 import User from './pages/User'
+import { CssBaseline, GlobalStyles } from '@suid/material'
+import { ThemeProvider } from '@suid/material/styles'
+import { appTheme } from './theme'
 
 const root = document.getElementById('root')
 
@@ -24,7 +27,16 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 }
 
 render(() => (
-    <>
+    <ThemeProvider theme={appTheme}>
+        <CssBaseline />
+        <GlobalStyles
+            styles={{
+                '::selection': {
+                    bgcolor: 'secondary.light',
+                    color: 'text.primary',
+                },
+            }}
+        />
         <PleaseWait />
         <Router root={App}>
             <Route path='/login' component={Login} />
@@ -39,5 +51,5 @@ render(() => (
             </Route>
             <Route path="*" component={NotFound} />
         </Router>
-    </>
+    </ThemeProvider>
 ), root!)
