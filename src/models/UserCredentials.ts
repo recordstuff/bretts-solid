@@ -6,7 +6,7 @@ export interface UserCredentials {
 export const defaultUserCredentials = () : UserCredentials =>
 {
     return {
-        Email: "adminanduser@brettdrake.org",
-        Password: "test123"
+        Email: "",
+        Password: ""
     }
 }

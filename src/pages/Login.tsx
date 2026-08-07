@@ -1,7 +1,7 @@
 import { Box, Button, ButtonGroup, Grid, TextField } from "@suid/material"
 import { HTTP_STATUS_CODES } from "../services/HttpClient"
 import { jwtUtil } from "../wrappers/JwtUtil"
-import { defaultUserCredentials, UserCredentials } from "../models/UserCredentials"
+import { UserCredentials } from "../models/UserCredentials"
 import { AxiosError } from "axios"
 import { userClient } from "../services/UserClient"
 import { Component, createSignal, onMount } from "solid-js"
@@ -9,9 +9,15 @@ import { useNavigate } from "@solidjs/router"
 import { clearAllWaits } from "../state/PleaseWait"
 import Snackbar from "../components/Snackbar"
 
+const sampleCredentials = {
+    adminAndUser: { Email: 'adminanduser@brettdrake.org', Password: 'test123' },
+    adminOnly: { Email: 'adminonly@brettdrake.org', Password: 'test123' },
+    userOnly: { Email: 'useronly@brettdrake.org', Password: 'test123' },
+} satisfies Record<string, UserCredentials>
+
 const Login: Component = () => {
 
-    const [userCredentials, setUserCredentials] = createSignal<UserCredentials>(defaultUserCredentials());
+    const [userCredentials, setUserCredentials] = createSignal<UserCredentials>({ ...sampleCredentials.adminAndUser });
     const [useErrorCondition, setUseErrorCondition] = createSignal<boolean>(false)
     const [isInvalidCredentials, setIsInvalidCredentials] = createSignal<boolean>(false)
     const navigate = useNavigate()
@@ -64,9 +70,9 @@ const Login: Component = () => {
                 </Grid>
                 <Grid item sx={{ textAlign: 'center' }}>
                     <ButtonGroup variant="text" aria-label="Populate with Credentials">
-                        <Button onClick={() => populateCredentials(defaultUserCredentials())}>Admin and User rights</Button>
-                        <Button onClick={() => populateCredentials({ Email: 'adminonly@brettdrake.org', Password: 'test123' })}>Admin rights only</Button>
-                        <Button onClick={() => populateCredentials({ Email: 'useronly@brettdrake.org', Password: 'test123' })}>User rights only</Button>
+                        <Button onClick={() => populateCredentials(sampleCredentials.adminAndUser)}>Admin and User rights</Button>
+                        <Button onClick={() => populateCredentials(sampleCredentials.adminOnly)}>Admin rights only</Button>
+                        <Button onClick={() => populateCredentials(sampleCredentials.userOnly)}>User rights only</Button>
                     </ButtonGroup>
                 </Grid>
                 <Grid item>
