@@ -13,6 +13,8 @@ import { setPageTitle } from "../state/App"
 import { firstBreadcrumb } from "../state/Breadcrumbs"
 import { A } from "@solidjs/router"
 import { cancelButtonStyles } from "../styles/interactiveStyles"
+import AppSnackbar from "../components/AppSnackbar"
+import { takeSuccessMessage } from "../utils/successMessageStorage"
 
 const PAGE_SIZE = 5
 
@@ -26,6 +28,7 @@ const Users: Component = () => {
     const [page, setPage] = createSignal(1)
     const [searchText, setSearchText] = createSignal('')
     const [roleFilter, setRoleFilter] = createSignal<JwtRole>(JwtRole.Any)
+    const [successMessage, setSuccessMessage] = createSignal<string | null>(null)
 
     const fetchUsersState = (): FetchUsersParams => ({ page: page(), searchText: searchText(), roleFilter: roleFilter() })
     const fetchUsers = ({ page, searchText, roleFilter }: FetchUsersParams): Promise<PaginationResult<UserSummary>> => userClient.getUsers(page, PAGE_SIZE, searchText, roleFilter)
@@ -34,6 +37,12 @@ const Users: Component = () => {
     onMount(() => {
         setPageTitle('Users')
         firstBreadcrumb({title:'Users', url: '/users'})
+
+        const storedSuccessMessage = takeSuccessMessage()
+
+        if (storedSuccessMessage !== null) {
+            setSuccessMessage(storedSuccessMessage)
+        }
     })
 
     return (
@@ -106,6 +115,11 @@ const Users: Component = () => {
                     setPage={setPage}
                 />
             </Stack>
+            <AppSnackbar
+                message={successMessage()}
+                severity="success"
+                onClose={() => setSuccessMessage(null)}
+            />
         </>
     )
 }

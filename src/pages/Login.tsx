@@ -7,7 +7,7 @@ import { userClient } from "../services/UserClient"
 import { Component, createSignal, onMount } from "solid-js"
 import { useNavigate } from "@solidjs/router"
 import { clearAllWaits } from "../state/PleaseWait"
-import Snackbar from "../components/Snackbar"
+import AppSnackbar from "../components/AppSnackbar"
 
 const Login: Component = () => {
 
@@ -105,10 +105,9 @@ const Login: Component = () => {
                         Login
                     </Button>
                 </Grid>
-                <Snackbar
-                    open={isInvalidCredentials()}
-                    autoHideDuration={3000}
-                    message="The Email or Password was incorrect."
+                <AppSnackbar
+                    message={isInvalidCredentials() ? 'The Email or Password was incorrect.' : null}
+                    severity="warning"
                     onClose={() => setIsInvalidCredentials(false)}
                 />
             </Grid>

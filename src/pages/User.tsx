@@ -7,26 +7,30 @@ import { NameGuidPair } from "../models/NameGuidPair"
 import { UserNew } from "../models/UserNew"
 import { AxiosError } from "axios"
 import { HTTP_STATUS_CODES } from "../services/HttpClient"
-import { Component, createResource, createSignal, onMount } from "solid-js"
+import { Component, createEffect, createResource, createSignal } from "solid-js"
 import { useNavigate, useParams } from "@solidjs/router"
 import { setPageTitle } from "../state/App"
 import { clearAllWaits } from "../state/PleaseWait"
 import { addBreadcrumb } from "../state/Breadcrumbs"
 import { cancelButtonStyles, deleteButtonStyles } from "../styles/interactiveStyles"
+import AppSnackbar from "../components/AppSnackbar"
+import YesNoDialog from "../components/YesNoDialog"
+import { storeSuccessMessage, takeSuccessMessage } from "../utils/successMessageStorage"
 
 const User: Component = () => {
 
     const [password, setPassword] = createSignal<string>('')
     const [selectedRoles, setSelectedRoles] = createSignal<NameGuidPair[]>([])
+    const [deleteDialogOpen, setDeleteDialogOpen] = createSignal(false)
+    const [successMessage, setSuccessMessage] = createSignal<string | null>(null)
 
-    const { id } = useParams();
+    const params = useParams()
+    const id = (): string | undefined => params.id
     const navigate = useNavigate();
 
 
-    const fetchUser = async (): Promise<UserDetail> => {
-        if (id === undefined) return emptyUserDetail()
-
-        const user = await userClient.getUser(id)
+    const fetchUser = async (userId: string): Promise<UserDetail> => {
+        const user = await userClient.getUser(userId)
 
         setSelectedRoles(user.Roles)
 
@@ -42,20 +46,31 @@ const User: Component = () => {
     const [user, { mutate, refetch }] = createResource(id, fetchUser, { initialValue: emptyUserDetail() })
     const [roles] = createResource(fetchRoles, { initialValue: [] })
 
-    onMount(() => {
+    createEffect(() => {
+        const userId = id()
         let url = '/user'
         let pageTitle
 
-        if (id === undefined) {
+        if (userId === undefined) {
             pageTitle = 'Add User'
         }
         else {
             pageTitle = 'Edit User'
-            url = `${url}/${id}`
+            url = `${url}/${userId}`
         }
 
         setPageTitle(pageTitle)
         addBreadcrumb({ title: pageTitle, url })
+    })
+
+    createEffect(() => {
+        if (id() === undefined) return
+
+        const storedSuccessMessage = takeSuccessMessage()
+
+        if (storedSuccessMessage !== null) {
+            setSuccessMessage(storedSuccessMessage)
+        }
     })
 
 
@@ -71,12 +86,13 @@ const User: Component = () => {
     }
 
     const upsert = async (): Promise<void> => {
-        if (id === undefined) {
+        if (id() === undefined) {
             const newUser: UserNew = { ...user(), Password: password() }
             newUser.Roles = selectedRoles()
 
             try {
                 const userDetail = await userClient.insertUser(newUser)
+                storeSuccessMessage('This user was created.')
                 navigate(`/user/${userDetail.Guid}`)
             }
             catch (ex: unknown) {
@@ -95,11 +111,12 @@ const User: Component = () => {
             newUser.Roles = selectedRoles()
 
             mutate(await userClient.updateUser(newUser))
+            setSuccessMessage('This user was saved.')
         }
     }
 
     const handleCancel = (): void => {
-        if (id === undefined) {
+        if (id() === undefined) {
             navigate(-1)
         }
         else {
@@ -108,19 +125,22 @@ const User: Component = () => {
     }
 
     const handleDelete = async (): Promise<void> => {
-        if (id === undefined) return
+        const userId = id()
+        if (userId === undefined) return
 
-        await userClient.deleteUser(id)
-        navigate(-1)
+        setDeleteDialogOpen(false)
+        await userClient.deleteUser(userId)
+        storeSuccessMessage('This user was deleted.')
+        navigate('/users')
     }
 
     return (
         <Stack margin={2} spacing={4}>
-            {id !== undefined && <TextField fullWidth label="Id" value={user().Guid} disabled />}
+            {id() !== undefined && <TextField fullWidth label="Id" value={user().Guid} disabled />}
             <TextField fullWidth label="Display Name" name='DisplayName' onChange={handleChange} value={user().DisplayName} />
             <TextField fullWidth label="Email" name='Email' onChange={handleChange} value={user().Email} />
             <TextField fullWidth label="Phone" name='Phone' onChange={handleChange} value={user().Phone} />
-            {id === undefined && <TextField fullWidth label="Password" name='Password' onChange={handleChange} value={password()} />}
+            {id() === undefined && <TextField fullWidth label="Password" name='Password' onChange={handleChange} value={password()} />}
             <ItemsSelector
                 label="Roles"
                 allItems={roles}
@@ -128,10 +148,21 @@ const User: Component = () => {
                 setSelected={setSelectedRoles}
             />
             <Stack direction='row' spacing={2}>
-                <Button onClick={upsert} color='primary' variant="contained">{id === undefined ? 'Add' : 'Save'}</Button>
-                <Button color="secondary" onClick={handleCancel} sx={cancelButtonStyles}>Cancel</Button>
-                {id !== undefined && <Button variant="contained" color="error" onClick={handleDelete} sx={deleteButtonStyles}>Delete</Button>}
+                <Button onClick={upsert} color='primary' variant="contained">{id() === undefined ? 'Add' : 'Save'}</Button>
+                <Button color="secondary" onClick={handleCancel} sx={cancelButtonStyles}>{id() === undefined ? 'Cancel' : 'Reset Form'}</Button>
+                {id() !== undefined && <Button variant="contained" color="error" onClick={() => setDeleteDialogOpen(true)} sx={deleteButtonStyles}>Delete</Button>}
             </Stack>
+            <YesNoDialog
+                open={deleteDialogOpen()}
+                question="Are you sure you want to delete this user?"
+                onNo={() => setDeleteDialogOpen(false)}
+                onYes={handleDelete}
+            />
+            <AppSnackbar
+                message={successMessage()}
+                severity="success"
+                onClose={() => setSuccessMessage(null)}
+            />
         </Stack>
     )
 }
