@@ -35,6 +35,15 @@ render(() => (
                     bgcolor: 'secondary.light',
                     color: 'text.primary',
                 },
+                '.MuiTableHead-root .MuiTableRow-root': {
+                    bgcolor: 'action.selected',
+                },
+                '.MuiTableBody-root .MuiTableRow-root:nth-of-type(odd)': {
+                    bgcolor: 'action.hover',
+                },
+                '.MuiTableBody-root .MuiTableRow-root:nth-of-type(even)': {
+                    bgcolor: 'background.paper',
+                },
             }}
         />
         <PleaseWait />
