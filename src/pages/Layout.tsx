@@ -81,10 +81,27 @@ const DrawerContent: Component<DrawerContentProps> = (props) => {
 
                     return (
                         <Show when={jwtUtil.hasRole(menuItem.Role)}>
-                            <ListItem disablePadding component={A} href={menuItem.Route}>
+                            <ListItem disablePadding>
                                 <ListItemButton
+                                    component={A}
+                                    href={menuItem.Route}
                                     onClick={props.onNavigate}
                                     selected={menuItem === selectedMenuOption()}
+                                    sx={{
+                                        color: 'text.primary',
+                                        textDecoration: 'none',
+                                        transition: 'background-color 120ms ease, transform 80ms ease',
+                                        '&:visited': {
+                                            color: 'text.primary',
+                                        },
+                                        '&:hover': {
+                                            bgcolor: 'action.hover',
+                                        },
+                                        '&:active': {
+                                            bgcolor: 'action.selected',
+                                            transform: 'scale(0.98)',
+                                        },
+                                    }}
                                 >
                                     <ListItemIcon>
                                         <menuItem.Icon />
