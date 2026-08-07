@@ -12,6 +12,13 @@ export const interactiveLinkStyles = {
     '&:visited': {
         color: 'text.primary',
     },
+    '&.Mui-selected': {
+        bgcolor: 'action.selected',
+        color: 'text.primary',
+        '& .MuiListItemIcon-root, & .MuiTypography-root, & .MuiSvgIcon-root': {
+            color: 'inherit',
+        },
+    },
     '&:hover, &.Mui-selected:hover, &:focus-visible': {
         bgcolor: 'primary.main',
         ...contrastingContent,
