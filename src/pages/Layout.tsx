@@ -150,22 +150,23 @@ const Layout: Component<RouteSectionProps> = (props) => {
                     component="nav"
                     sx={{ flexShrink: { sm: 0 }, width: { sm: drawerWidth } }}
                 >
-                    <Drawer
-                        id="mobile-navigation-drawer"
-                        ModalProps={{ keepMounted: true }}
-                        onClose={handleDrawerClose}
-                        open={mobileOpen()}
-                        sx={{
-                            display: { xs: 'block', sm: 'none' },
-                            '& .MuiDrawer-paper': {
-                                boxSizing: 'border-box',
-                                width: drawerWidth,
-                            },
-                        }}
-                        variant="temporary"
-                    >
-                        <DrawerContent pathname={location.pathname} onNavigate={handleDrawerClose} />
-                    </Drawer>
+                    <Show when={mobileOpen()}>
+                        <Drawer
+                            id="mobile-navigation-drawer"
+                            onClose={handleDrawerClose}
+                            open
+                            sx={{
+                                display: { xs: 'block', sm: 'none' },
+                                '& .MuiDrawer-paper': {
+                                    boxSizing: 'border-box',
+                                    width: drawerWidth,
+                                },
+                            }}
+                            variant="temporary"
+                        >
+                            <DrawerContent pathname={location.pathname} onNavigate={handleDrawerClose} />
+                        </Drawer>
+                    </Show>
                     <Drawer
                         open
                         sx={{
