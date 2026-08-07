@@ -23,7 +23,22 @@ const OptionCard: Component<OptionCardProps> = (props) => (
         <CardActionArea
             component={A}
             href={props.href}
-            sx={{ p: props.featured ? 3 : 2 }}
+            sx={{
+                p: props.featured ? 3 : 2,
+                color: 'text.primary',
+                textDecoration: 'none',
+                transition: 'background-color 120ms ease, transform 80ms ease',
+                '&:visited': {
+                    color: 'text.primary',
+                },
+                '&:hover': {
+                    bgcolor: 'action.hover',
+                },
+                '&:active': {
+                    bgcolor: 'action.selected',
+                    transform: 'scale(0.995)',
+                },
+            }}
         >
             {props.children}
         </CardActionArea>
