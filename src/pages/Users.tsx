@@ -14,6 +14,8 @@ import { setPageTitle } from "../state/App"
 import { firstBreadcrumb } from "../state/Breadcrumbs"
 import { A } from "@solidjs/router"
 import { cancelButtonStyles } from "../styles/interactiveStyles"
+import { lighten } from "@suid/material/styles"
+import { appTheme } from "../theme"
 import AppSnackbar from "../components/AppSnackbar"
 import { takeSuccessMessage } from "../utils/successMessageStorage"
 import { SortDirection } from "../models/SortDirection"
@@ -38,11 +40,11 @@ const sortableHeaderStyles = {
     textUnderlineOffset: '0.2em',
     transition: 'background-color 120ms ease, color 120ms ease, transform 80ms ease',
     '&:hover': {
-        bgcolor: 'background.default',
+        bgcolor: lighten(appTheme.palette.secondary.light, 0.3),
         color: 'text.primary',
     },
     '&:active': {
-        bgcolor: '#E3D2CD',
+        bgcolor: lighten(appTheme.palette.secondary.light, 0.15),
         color: 'text.primary',
         transform: 'translateY(1px) scale(0.98)',
     },
