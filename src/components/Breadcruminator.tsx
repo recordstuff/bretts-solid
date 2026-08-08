@@ -7,9 +7,6 @@ export const Breadcrumbinator: Component = () => {
 
     return (    
         <Breadcrumbs sx={{paddingBottom: 1}}>
-            <Link href='/'>
-                Home
-            </Link>
             {breadcrumbs().map((page, index) => {
                 if (index === breadcrumbs().length - 1) {
                     return (

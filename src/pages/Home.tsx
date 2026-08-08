@@ -8,6 +8,7 @@ import { A } from '@solidjs/router'
 import { onMount } from 'solid-js'
 import type { Component, JSX } from 'solid-js'
 import { setPageTitle } from '../state/App'
+import { firstBreadcrumb } from '../state/Breadcrumbs'
 import { interactiveLinkStyles } from '../styles/interactiveStyles'
 
 interface OptionCardProps {
@@ -37,6 +38,7 @@ const OptionCard: Component<OptionCardProps> = (props) => (
 const Home: Component = () => {
     onMount(() => {
         setPageTitle('Home')
+        firstBreadcrumb({ title: 'Home', url: '/' })
     })
 
     return (

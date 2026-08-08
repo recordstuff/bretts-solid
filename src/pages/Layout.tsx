@@ -18,6 +18,7 @@ import type { RouteSectionProps } from "@solidjs/router";
 import { pageTitle } from "../state/App";
 import { Breadcrumbinator } from "../components/Breadcruminator";
 import { interactiveLinkStyles, logoutLinkStyles, mobileMenuButtonStyles } from "../styles/interactiveStyles";
+import { firstBreadcrumb } from "../state/Breadcrumbs";
 
 const drawerWidth = 200
 const menuOptions: DrawerMenuItem[] = [
@@ -26,24 +27,28 @@ const menuOptions: DrawerMenuItem[] = [
         Route: "/",
         Icon: HomeIcon,
         Role: JwtRole.Any,
+        Breadcrumb: { title: "Home", url: "/" },
     },
     {
         Text: "Grid Example",
         Route: "/gridexample",
         Icon: TableRowsIcon,
         Role: JwtRole.User,
+        Breadcrumb: { title: "Grid Example", url: "/gridexample" },
     },
     {
         Text: "Example Two",
         Route: "/exampletwo",
         Icon: TableChartIcon,
         Role: JwtRole.User,
+        Breadcrumb: { title: "Example Two", url: "/exampletwo" },
     },
     {
         Text: "Bacon Ipsum",
         Route: "/baconipsum",
         Icon: AgricultureIcon,
         Role: JwtRole.User,
+        Breadcrumb: { title: "Bacon Ipsum", url: "/baconipsum" },
     },
     divider,
     {
@@ -51,6 +56,7 @@ const menuOptions: DrawerMenuItem[] = [
         Route: "/users",
         Icon: PeopleIcon,
         Role: JwtRole.Admin,
+        Breadcrumb: { title: "Users", url: "/users" },
         ChildRoutes: ['/user']
     },
     {
@@ -58,11 +64,12 @@ const menuOptions: DrawerMenuItem[] = [
         Route: "/settings",
         Icon: SettingsIcon,
         Role: JwtRole.Admin,
+        Breadcrumb: { title: "Settings", url: "/settings" },
     },
 ]
 
 interface DrawerContentProps {
-    onNavigate: () => void
+    onNavigate: (menuOption: MenuOption) => void
     pathname: string
 }
 
@@ -86,7 +93,7 @@ const DrawerContent: Component<DrawerContentProps> = (props) => {
                                 <ListItemButton
                                     component={A}
                                     href={menuItem.Route}
-                                    onClick={props.onNavigate}
+                                    onClick={() => props.onNavigate(menuItem)}
                                     selected={menuItem === selectedMenuOption()}
                                     sx={interactiveLinkStyles}
                                 >
@@ -114,6 +121,11 @@ const Layout: Component<RouteSectionProps> = (props) => {
 
     const handleDrawerClose = (): void => {
         setMobileOpen(false)
+    }
+
+    const handleDrawerNavigate = (menuOption: MenuOption): void => {
+        firstBreadcrumb(menuOption.Breadcrumb)
+        handleDrawerClose()
     }
 
     return (
@@ -181,7 +193,7 @@ const Layout: Component<RouteSectionProps> = (props) => {
                             }}
                             variant="temporary"
                         >
-                            <DrawerContent pathname={location.pathname} onNavigate={handleDrawerClose} />
+                            <DrawerContent pathname={location.pathname} onNavigate={handleDrawerNavigate} />
                         </Drawer>
                     </Show>
                     <Drawer
@@ -195,7 +207,7 @@ const Layout: Component<RouteSectionProps> = (props) => {
                         }}
                         variant="permanent"
                     >
-                        <DrawerContent pathname={location.pathname} onNavigate={handleDrawerClose} />
+                        <DrawerContent pathname={location.pathname} onNavigate={handleDrawerNavigate} />
                     </Drawer>
                 </Box>
                 <Box
