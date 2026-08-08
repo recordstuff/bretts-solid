@@ -63,7 +63,8 @@ const Login: Component = () => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                minHeight: '50vh',
+                minHeight: { xs: '50vh', xl: '100dvh' },
+                boxSizing: 'border-box',
                 padding: 2,
             }}>
             <Paper
@@ -73,6 +74,7 @@ const Login: Component = () => {
                     maxWidth: '36rem',
                     padding: { xs: 2, sm: 3 },
                     borderColor: 'divider',
+                    transform: { xl: 'translateY(-2rem)' },
                 }}>
                 <Grid container direction="column" spacing={2}>
                     <Grid item>
