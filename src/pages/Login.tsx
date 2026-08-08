@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Grid, TextField } from "@suid/material"
+import { Box, Button, Grid, Link, Paper, TextField } from "@suid/material"
 import { HTTP_STATUS_CODES } from "../services/HttpClient"
 import { jwtUtil } from "../wrappers/JwtUtil"
 import { defaultUserCredentials, UserCredentials } from "../models/UserCredentials"
@@ -57,60 +57,95 @@ const Login: Component = () => {
     })
 
     return (
-        <Box component='div' sx={{ display: 'flex' }} justifyContent="center" alignItems="center" minHeight="50vh">
-            <Grid item lg={4} container direction="column" margin={2} spacing={2}>
-                <Grid item>
-                    This is a SolidJS sample. Log in with Admin and User rights to see all options, including Users CRUD operations.
-                </Grid>
-                <Grid item sx={{ textAlign: 'center' }}>
-                    <ButtonGroup variant="text" aria-label="Populate with Credentials">
-                        <Button onClick={() => populateCredentials(defaultUserCredentials())}>Admin and User rights</Button>
-                        <Button onClick={() => populateCredentials({ Email: 'adminonly@brettdrake.org', Password: 'test123' })}>Admin rights only</Button>
-                        <Button onClick={() => populateCredentials({ Email: 'useronly@brettdrake.org', Password: 'test123' })}>User rights only</Button>
-                    </ButtonGroup>
-                </Grid>
-                <Grid item>
-                    <TextField
-                        fullWidth
-                        name="Email"
-                        label="Email"
-                        type="email"
-                        onChange={credentialsChanged}
-                        required
-                        error={useErrorCondition() && userCredentials().Email.length === 0}
-                        helperText={useErrorCondition() && userCredentials().Email.length === 0 && "Email cannot be blank."}
-                        value={userCredentials().Email}
+        <Box
+            component="main"
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: { xs: '50vh', xl: '100dvh' },
+                boxSizing: 'border-box',
+                padding: 2,
+                paddingTop: { xs: 4, sm: 2 },
+            }}>
+            <Paper
+                variant="outlined"
+                sx={{
+                    width: '100%',
+                    maxWidth: '36rem',
+                    padding: { xs: 2, sm: 3 },
+                    borderColor: 'divider',
+                    transform: { xl: 'translateY(-4rem)' },
+                }}>
+                <Grid container direction="column" spacing={2}>
+                    <Grid item>
+                        This is a SolidJS sample. Log in with Admin and User rights to see all options, including Users CRUD operations.
+                    </Grid>
+                    <Grid item>
+                        <Box
+                            role="group"
+                            aria-label="Populate with Credentials"
+                            sx={{
+                                display: 'grid',
+                                gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' },
+                            }}>
+                            <Button onClick={() => populateCredentials(defaultUserCredentials())}>Admin and User rights</Button>
+                            <Button onClick={() => populateCredentials({ Email: 'adminonly@brettdrake.org', Password: 'test123' })}>Admin rights only</Button>
+                            <Button onClick={() => populateCredentials({ Email: 'useronly@brettdrake.org', Password: 'test123' })}>User rights only</Button>
+                        </Box>
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            fullWidth
+                            name="Email"
+                            label="Email"
+                            type="email"
+                            onChange={credentialsChanged}
+                            required
+                            error={useErrorCondition() && userCredentials().Email.length === 0}
+                            helperText={useErrorCondition() && userCredentials().Email.length === 0 && "Email cannot be blank."}
+                            value={userCredentials().Email}
+                        />
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            fullWidth
+                            name="Password"
+                            label="Password"
+                            type="password"
+                            onChange={credentialsChanged}
+                            required
+                            error={useErrorCondition() && userCredentials().Password.length === 0}
+                            helperText={useErrorCondition() && userCredentials().Password.length === 0 && "Password cannot be blank."}
+                            value={userCredentials().Password}
+                        />
+                    </Grid>
+                    <Grid item>
+                        <Button
+                            fullWidth
+                            variant="outlined"
+                            color="primary"
+                            onClick={login}
+                            disabled={useErrorCondition() && (userCredentials().Email.length === 0 || userCredentials().Password.length === 0)}>
+                            Login
+                        </Button>
+                    </Grid>
+                    <Grid item sx={{ textAlign: 'right' }}>
+                        <Link
+                            href="https://brettdrake.org/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            color="primary">
+                            brettdrake.org
+                        </Link>
+                    </Grid>
+                    <AppSnackbar
+                        message={isInvalidCredentials() ? 'The Email or Password was incorrect.' : null}
+                        severity="warning"
+                        onClose={() => setIsInvalidCredentials(false)}
                     />
                 </Grid>
-                <Grid item>
-                    <TextField
-                        fullWidth
-                        name="Password"
-                        label="Password"
-                        type="password"
-                        onChange={credentialsChanged}
-                        required
-                        error={useErrorCondition() && userCredentials().Password.length === 0}
-                        helperText={useErrorCondition() && userCredentials().Password.length === 0 && "Password cannot be blank."}
-                        value={userCredentials().Password}
-                    />
-                </Grid>
-                <Grid item>
-                    <Button
-                        fullWidth
-                        variant="outlined"
-                        color="primary"
-                        onClick={login}
-                        disabled={useErrorCondition() && (userCredentials().Email.length === 0 || userCredentials().Password.length === 0)}>
-                        Login
-                    </Button>
-                </Grid>
-                <AppSnackbar
-                    message={isInvalidCredentials() ? 'The Email or Password was incorrect.' : null}
-                    severity="warning"
-                    onClose={() => setIsInvalidCredentials(false)}
-                />
-            </Grid>
+            </Paper>
         </Box>
     )
 }
