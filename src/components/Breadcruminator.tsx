@@ -1,6 +1,7 @@
 import { Breadcrumbs, Link, Typography } from "@suid/material"
 import { Component } from "solid-js"
 import { breadcrumbs } from "../state/Breadcrumbs"
+import { breadcrumbLinkStyles } from "../styles/interactiveStyles"
 
 export const Breadcrumbinator: Component = () => {
     
@@ -17,7 +18,7 @@ export const Breadcrumbinator: Component = () => {
                 }
                 else {
                     return (
-                        <Link href={page.url}>
+                        <Link href={page.url} sx={breadcrumbLinkStyles}>
                             {page.title}
                         </Link>
                     )

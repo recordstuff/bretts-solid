@@ -87,6 +87,27 @@ export const logoutLinkStyles = {
     },
 }
 
+export const breadcrumbLinkStyles = {
+    color: 'primary.main',
+    textDecoration: 'underline',
+    textDecorationThickness: '1px',
+    textUnderlineOffset: '0.2em',
+    transition: 'color 120ms ease, text-decoration-thickness 120ms ease',
+    '&:visited': {
+        color: 'primary.main',
+    },
+    '&:hover, &:focus-visible': {
+        color: 'primary.light',
+        fontWeight: 600,
+        textDecorationThickness: '2px',
+    },
+    '&:active': {
+        color: 'primary.dark',
+        fontWeight: 700,
+        textDecorationThickness: '3px',
+    },
+}
+
 export const deleteButtonStyles = {
     '&:hover, &:focus-visible': {
         bgcolor: '#B3261E',
