@@ -34,30 +34,30 @@ const Settings: Component = () => {
         <Stack spacing={2}>
             <Typography>Administrators are fancier than average people.</Typography>
             <Stack
-                spacing={2}
                 sx={{
                     alignItems: { xs: 'stretch', sm: 'center' },
                     flexDirection: { xs: 'column', sm: 'row' },
+                    gap: 2,
                 }}
             >
                 <Typography>Write a test log entry:</Typography>
                 <Button onClick={writeLogEntry} variant="contained">Write Log Entry</Button>
             </Stack>
             <Stack
-                spacing={2}
                 sx={{
                     alignItems: { xs: 'stretch', sm: 'center' },
                     flexDirection: { xs: 'column', sm: 'row' },
+                    gap: 2,
                 }}
             >
                 <Typography>Test the global exception handler:</Typography>
                 <Button onClick={throwError} variant="contained">Throw Error</Button>
             </Stack>
             <Stack
-                spacing={2}
                 sx={{
                     alignItems: { xs: 'stretch', sm: 'center' },
                     flexDirection: { xs: 'column', sm: 'row' },
+                    gap: 2,
                 }}
             >
                 <Typography>I don't mind. This is a sandbox. If anyone really does attack me, I'll hide it.</Typography>
