@@ -66,6 +66,7 @@ const Login: Component = () => {
                 minHeight: { xs: '50vh', xl: '100dvh' },
                 boxSizing: 'border-box',
                 padding: 2,
+                paddingTop: { xs: 4, sm: 2 },
             }}>
             <Paper
                 variant="outlined"
