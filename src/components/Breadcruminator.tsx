@@ -1,15 +1,13 @@
 import { Breadcrumbs, Link, Typography } from "@suid/material"
 import { Component } from "solid-js"
 import { breadcrumbs } from "../state/Breadcrumbs"
+import { breadcrumbLinkStyles } from "../styles/interactiveStyles"
 
 export const Breadcrumbinator: Component = () => {
     
 
     return (    
         <Breadcrumbs sx={{paddingBottom: 1}}>
-            <Link href='/'>
-                Home
-            </Link>
             {breadcrumbs().map((page, index) => {
                 if (index === breadcrumbs().length - 1) {
                     return (
@@ -20,7 +18,7 @@ export const Breadcrumbinator: Component = () => {
                 }
                 else {
                     return (
-                        <Link href={page.url}>
+                        <Link href={page.url} sx={breadcrumbLinkStyles}>
                             {page.title}
                         </Link>
                     )

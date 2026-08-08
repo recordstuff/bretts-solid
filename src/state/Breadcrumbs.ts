@@ -36,11 +36,6 @@ const persist = () => {
     localStorage.setItem(SESSION_KEY, JSON.stringify(breadcrumbs()))
 }
 
-export const atHome = () => {
-    setBreadcrumbs([])
-    persist()
-}
-
 export const firstBreadcrumb = (visitedPage: VisitedPage) => {
     setBreadcrumbs([visitedPage])
     persist()
@@ -49,9 +44,6 @@ export const firstBreadcrumb = (visitedPage: VisitedPage) => {
 export const addBreadcrumb = (visitedPage: VisitedPage) => {
     if (isLastBreadcrumb(visitedPage)) return 
 
-    const crumbs = breadcrumbs()
-    crumbs.push(visitedPage)
-
-    setBreadcrumbs(crumbs)
+    setBreadcrumbs(currentBreadcrumbs => [...currentBreadcrumbs, visitedPage])
     persist()
 }
