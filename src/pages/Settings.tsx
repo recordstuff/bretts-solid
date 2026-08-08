@@ -33,7 +33,7 @@ const Settings: Component = () => {
     return (
         <Stack spacing={2}>
             <Typography>Administrators are fancier than average people.</Typography>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} sx={{ maxWidth: '56rem', mx: 'auto', width: '100%' }}>
                 <Table aria-label="Administrator tasks" sx={{ tableLayout: 'fixed' }}>
                     <TableHead>
                         <TableRow>
