@@ -17,6 +17,7 @@ import User from './pages/User'
 import { CssBaseline, GlobalStyles } from '@suid/material'
 import { ThemeProvider } from '@suid/material/styles'
 import { appTheme } from './theme'
+import ErrorBoundary from './components/ErrorBoundary'
 
 const root = document.getElementById('root')
 
@@ -46,19 +47,21 @@ render(() => (
                 },
             }}
         />
-        <PleaseWait />
-        <Router root={App}>
-            <Route path='/login' component={Login} />
-            <Route path="/" component={Layout}>
-                <Route path="" component={Home} />
-                <Route path="baconipsum" component={BaconIpsum} />
-                <Route path="exampletwo" component={ExampleTwo} />
-                <Route path="gridexample" component={GridExample} />
-                <Route path="users" component={Users} />
-                <Route path="user/:id?" component={User} />
-                <Route path="settings" component={Settings} />
-            </Route>
-            <Route path="*" component={NotFound} />
-        </Router>
+        <ErrorBoundary>
+            <PleaseWait />
+            <Router root={App}>
+                <Route path='/login' component={Login} />
+                <Route path="/" component={Layout}>
+                    <Route path="" component={Home} />
+                    <Route path="baconipsum" component={BaconIpsum} />
+                    <Route path="exampletwo" component={ExampleTwo} />
+                    <Route path="gridexample" component={GridExample} />
+                    <Route path="users" component={Users} />
+                    <Route path="user/:id?" component={User} />
+                    <Route path="settings" component={Settings} />
+                </Route>
+                <Route path="*" component={NotFound} />
+            </Router>
+        </ErrorBoundary>
     </ThemeProvider>
 ), root!)
