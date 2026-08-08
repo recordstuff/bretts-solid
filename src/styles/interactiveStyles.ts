@@ -98,7 +98,7 @@ export const breadcrumbLinkStyles = {
     },
     '&:hover, &:focus-visible': {
         color: '#6F8792',
-        fontWeight: 600,
+        fontWeight: 500,
         textDecorationThickness: '2px',
     },
     '&:active': {
