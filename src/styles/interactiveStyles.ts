@@ -88,13 +88,13 @@ export const logoutLinkStyles = {
 }
 
 export const breadcrumbLinkStyles = {
-    color: 'primary.main',
+    color: 'secondary.main',
     textDecoration: 'underline',
     textDecorationThickness: '1px',
     textUnderlineOffset: '0.2em',
     transition: 'color 120ms ease, text-decoration-thickness 120ms ease',
     '&:visited': {
-        color: 'primary.main',
+        color: 'secondary.main',
     },
     '&:hover, &:focus-visible': {
         color: 'primary.light',
