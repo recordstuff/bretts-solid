@@ -74,7 +74,7 @@ const Login: Component = () => {
                     maxWidth: '36rem',
                     padding: { xs: 2, sm: 3 },
                     borderColor: 'divider',
-                    transform: { xl: 'translateY(-2rem)' },
+                    transform: { xl: 'translateY(-4rem)' },
                 }}>
                 <Grid container direction="column" spacing={2}>
                     <Grid item>
