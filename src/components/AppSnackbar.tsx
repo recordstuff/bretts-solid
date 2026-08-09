@@ -1,11 +1,11 @@
 import { Alert, Box, Fade } from "@suid/material"
-import type { AlertColor } from "@suid/material/Alert"
 import { Component, Show, createEffect, onCleanup } from "solid-js"
 import { Portal } from "solid-js/web"
+import { AppSnackbarSeverity } from "../models/AppSnackbarState"
 
 interface AppSnackbarProps {
     message: string | null
-    severity: AlertColor
+    severity: AppSnackbarSeverity
     onClose: () => void
 }
 

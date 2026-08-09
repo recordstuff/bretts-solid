@@ -13,16 +13,16 @@ import { setPageTitle } from "../state/App"
 import { clearAllWaits } from "../state/PleaseWait"
 import { addBreadcrumb } from "../state/Breadcrumbs"
 import { cancelButtonStyles, deleteButtonStyles } from "../styles/interactiveStyles"
-import AppSnackbar from "../components/AppSnackbar"
 import YesNoDialog from "../components/YesNoDialog"
 import { storeSuccessMessage, takeSuccessMessage } from "../utils/successMessageStorage"
+import { showSnackbar } from "../state/AppSnackbar"
+import { AppSnackbarSeverity } from "../models/AppSnackbarState"
 
 const User: Component = () => {
 
     const [password, setPassword] = createSignal<string>('')
     const [selectedRoles, setSelectedRoles] = createSignal<NameGuidPair[]>([])
     const [deleteDialogOpen, setDeleteDialogOpen] = createSignal(false)
-    const [successMessage, setSuccessMessage] = createSignal<string | null>(null)
 
     const params = useParams()
     const id = (): string | undefined => params.id
@@ -69,7 +69,7 @@ const User: Component = () => {
         const storedSuccessMessage = takeSuccessMessage()
 
         if (storedSuccessMessage !== null) {
-            setSuccessMessage(storedSuccessMessage)
+            showSnackbar(storedSuccessMessage, AppSnackbarSeverity.Success)
         }
     })
 
@@ -111,7 +111,7 @@ const User: Component = () => {
             newUser.Roles = selectedRoles()
 
             mutate(await userClient.updateUser(newUser))
-            setSuccessMessage('This user was saved.')
+            showSnackbar('This user was saved.', AppSnackbarSeverity.Success)
         }
     }
 
@@ -157,11 +157,6 @@ const User: Component = () => {
                 question="Are you sure you want to delete this user?"
                 onNo={() => setDeleteDialogOpen(false)}
                 onYes={handleDelete}
-            />
-            <AppSnackbar
-                message={successMessage()}
-                severity="success"
-                onClose={() => setSuccessMessage(null)}
             />
         </Stack>
     )
