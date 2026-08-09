@@ -20,6 +20,8 @@ import AppSnackbar from "../components/AppSnackbar"
 import { takeSuccessMessage } from "../utils/successMessageStorage"
 import { SortDirection } from "../models/SortDirection"
 import { UsersSortColumn } from "../models/UsersSortColumn"
+import { createAppSnackbar } from "../state/AppSnackbar"
+import { AppSnackbarSeverity } from "../models/AppSnackbarState"
 
 const PAGE_SIZE = 5
 const USER_SORT_COLUMNS = [
@@ -72,7 +74,7 @@ const Users: Component = () => {
     const [roleFilter, setRoleFilter] = createSignal<JwtRole>(JwtRole.Any)
     const [sortColumn, setSortColumn] = createSignal(UsersSortColumn.DisplayName)
     const [sortDirection, setSortDirection] = createSignal(SortDirection.Ascending)
-    const [successMessage, setSuccessMessage] = createSignal<string | null>(null)
+    const {snackbar, showSnackbar, closeSnackbar} = createAppSnackbar()
 
     const fetchUsersState = (): FetchUsersParams => ({
         page: page(),
@@ -106,7 +108,7 @@ const Users: Component = () => {
         const storedSuccessMessage = takeSuccessMessage()
 
         if (storedSuccessMessage !== null) {
-            setSuccessMessage(storedSuccessMessage)
+            showSnackbar(storedSuccessMessage, AppSnackbarSeverity.Success)
         }
     })
 
@@ -201,9 +203,9 @@ const Users: Component = () => {
                 />
             </Stack>
             <AppSnackbar
-                message={successMessage()}
-                severity="success"
-                onClose={() => setSuccessMessage(null)}
+                message={snackbar().message}
+                severity={snackbar().severity}
+                onClose={closeSnackbar}
             />
         </>
     )

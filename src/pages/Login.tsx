@@ -8,12 +8,14 @@ import { Component, createSignal, onMount } from "solid-js"
 import { useNavigate } from "@solidjs/router"
 import { clearAllWaits } from "../state/PleaseWait"
 import AppSnackbar from "../components/AppSnackbar"
+import { createAppSnackbar } from "../state/AppSnackbar"
+import { AppSnackbarSeverity } from "../models/AppSnackbarState"
 
 const Login: Component = () => {
 
     const [userCredentials, setUserCredentials] = createSignal<UserCredentials>(defaultUserCredentials());
     const [useErrorCondition, setUseErrorCondition] = createSignal<boolean>(false)
-    const [isInvalidCredentials, setIsInvalidCredentials] = createSignal<boolean>(false)
+    const {snackbar, showSnackbar, closeSnackbar} = createAppSnackbar()
     const navigate = useNavigate()
 
     const login = async (): Promise<void> => {
@@ -32,7 +34,7 @@ const Login: Component = () => {
         catch (ex: unknown) {
             clearAllWaits()
             if (ex instanceof AxiosError && ex.response?.status === HTTP_STATUS_CODES.UNAUTHORIZED) {
-                setIsInvalidCredentials(true)
+                showSnackbar('The Email or Password was incorrect.', AppSnackbarSeverity.Warning)
                 return
             }
 
@@ -41,14 +43,14 @@ const Login: Component = () => {
     }
 
     const credentialsChanged = (event: { target: { name: string; value: any } }, value: any): void => {
-        setIsInvalidCredentials(false)
+        closeSnackbar()
         let newCreds = { ...userCredentials() }
         newCreds[event.target.name as keyof UserCredentials] = value
         setUserCredentials(newCreds)
     }
 
     const populateCredentials = (credentials: UserCredentials): void => {
-        setIsInvalidCredentials(false)
+        closeSnackbar()
         setUserCredentials(credentials)
     }
 
@@ -140,9 +142,9 @@ const Login: Component = () => {
                         </Link>
                     </Grid>
                     <AppSnackbar
-                        message={isInvalidCredentials() ? 'The Email or Password was incorrect.' : null}
-                        severity="warning"
-                        onClose={() => setIsInvalidCredentials(false)}
+                        message={snackbar().message}
+                        severity={snackbar().severity}
+                        onClose={closeSnackbar}
                     />
                 </Grid>
             </Paper>
