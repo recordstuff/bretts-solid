@@ -1,6 +1,8 @@
-import { Component, onMount } from "solid-js"
+import { Component, createSignal, onMount } from "solid-js"
 import { Button, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@suid/material"
+import type { AlertColor } from "@suid/material/Alert"
 import { alpha } from "@suid/material/styles"
+import AppSnackbar from "../components/AppSnackbar"
 import { setPageTitle } from "../state/App"
 import { firstBreadcrumb } from "../state/Breadcrumbs"
 import { testClient } from "../services/TestClient"
@@ -12,6 +14,8 @@ const shutdownColors = {
 } as const
 
 const Settings: Component = () => {
+    const [snackbarMessage, setSnackbarMessage] = createSignal<string | null>(null)
+    const [snackbarSeverity, setSnackbarSeverity] = createSignal<AlertColor>('success')
 
     onMount(() => {
         setPageTitle('Settings')
@@ -23,11 +27,25 @@ const Settings: Component = () => {
     }
 
     const writeLogEntry = async (): Promise<void> => {
-        await testClient.writeLogEntry()
+        try {
+            await testClient.writeLogEntry()
+            setSnackbarSeverity('success')
+            setSnackbarMessage('The test log entry was written.')
+        } catch {
+            setSnackbarSeverity('error')
+            setSnackbarMessage('The test log entry could not be written.')
+        }
     }
 
     const shutdown = async (): Promise<void> => {
-        await testClient.shutdown()
+        try {
+            await testClient.shutdown()
+            setSnackbarSeverity('success')
+            setSnackbarMessage('The backend shutdown was requested.')
+        } catch {
+            setSnackbarSeverity('error')
+            setSnackbarMessage('The backend shutdown could not be requested.')
+        }
     }
 
     return (
@@ -87,6 +105,11 @@ const Settings: Component = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <AppSnackbar
+                message={snackbarMessage()}
+                severity={snackbarSeverity()}
+                onClose={() => setSnackbarMessage(null)}
+            />
         </Stack>
     )
 }
