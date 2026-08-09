@@ -13,10 +13,9 @@ import { setPageTitle } from "../state/App"
 import { clearAllWaits } from "../state/PleaseWait"
 import { addBreadcrumb } from "../state/Breadcrumbs"
 import { cancelButtonStyles, deleteButtonStyles } from "../styles/interactiveStyles"
-import AppSnackbar from "../components/AppSnackbar"
 import YesNoDialog from "../components/YesNoDialog"
 import { storeSuccessMessage, takeSuccessMessage } from "../utils/successMessageStorage"
-import { createAppSnackbar } from "../state/AppSnackbar"
+import { showSnackbar } from "../state/AppSnackbar"
 import { AppSnackbarSeverity } from "../models/AppSnackbarState"
 
 const User: Component = () => {
@@ -24,7 +23,6 @@ const User: Component = () => {
     const [password, setPassword] = createSignal<string>('')
     const [selectedRoles, setSelectedRoles] = createSignal<NameGuidPair[]>([])
     const [deleteDialogOpen, setDeleteDialogOpen] = createSignal(false)
-    const {snackbar, showSnackbar, closeSnackbar} = createAppSnackbar()
 
     const params = useParams()
     const id = (): string | undefined => params.id
@@ -159,11 +157,6 @@ const User: Component = () => {
                 question="Are you sure you want to delete this user?"
                 onNo={() => setDeleteDialogOpen(false)}
                 onYes={handleDelete}
-            />
-            <AppSnackbar
-                message={snackbar().message}
-                severity={snackbar().severity}
-                onClose={closeSnackbar}
             />
         </Stack>
     )

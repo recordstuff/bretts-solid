@@ -7,15 +7,13 @@ import { userClient } from "../services/UserClient"
 import { Component, createSignal, onMount } from "solid-js"
 import { useNavigate } from "@solidjs/router"
 import { clearAllWaits } from "../state/PleaseWait"
-import AppSnackbar from "../components/AppSnackbar"
-import { createAppSnackbar } from "../state/AppSnackbar"
+import { closeSnackbar, showSnackbar } from "../state/AppSnackbar"
 import { AppSnackbarSeverity } from "../models/AppSnackbarState"
 
 const Login: Component = () => {
 
     const [userCredentials, setUserCredentials] = createSignal<UserCredentials>(defaultUserCredentials());
     const [useErrorCondition, setUseErrorCondition] = createSignal<boolean>(false)
-    const {snackbar, showSnackbar, closeSnackbar} = createAppSnackbar()
     const navigate = useNavigate()
 
     const login = async (): Promise<void> => {
@@ -141,11 +139,6 @@ const Login: Component = () => {
                             brettdrake.org
                         </Link>
                     </Grid>
-                    <AppSnackbar
-                        message={snackbar().message}
-                        severity={snackbar().severity}
-                        onClose={closeSnackbar}
-                    />
                 </Grid>
             </Paper>
         </Box>

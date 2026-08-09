@@ -1,11 +1,10 @@
 import { Component, onMount } from "solid-js"
 import { Button, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@suid/material"
 import { alpha } from "@suid/material/styles"
-import AppSnackbar from "../components/AppSnackbar"
 import { setPageTitle } from "../state/App"
 import { firstBreadcrumb } from "../state/Breadcrumbs"
 import { testClient } from "../services/TestClient"
-import { createAppSnackbar } from "../state/AppSnackbar"
+import { showSnackbar } from "../state/AppSnackbar"
 import { AppSnackbarSeverity } from "../models/AppSnackbarState"
 
 const shutdownColors = {
@@ -15,7 +14,6 @@ const shutdownColors = {
 } as const
 
 const Settings: Component = () => {
-    const {snackbar, showSnackbar, closeSnackbar} = createAppSnackbar()
 
     onMount(() => {
         setPageTitle('Settings')
@@ -101,11 +99,6 @@ const Settings: Component = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <AppSnackbar
-                message={snackbar().message}
-                severity={snackbar().severity}
-                onClose={closeSnackbar}
-            />
         </Stack>
     )
 }

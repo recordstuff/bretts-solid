@@ -1,19 +1,17 @@
 import { createSignal } from 'solid-js'
 import { AppSnackbarSeverity, AppSnackbarState } from '../models/AppSnackbarState'
 
-export const createAppSnackbar = () => {
-    const [snackbar, setSnackbar] = createSignal<AppSnackbarState>({
-        message: null,
-        severity: AppSnackbarSeverity.Info,
-    })
+const [snackbar, setSnackbar] = createSignal<AppSnackbarState>({
+    message: null,
+    severity: AppSnackbarSeverity.Info,
+})
 
-    const showSnackbar = (message: string, severity: AppSnackbarSeverity): void => {
-        setSnackbar({message, severity})
-    }
+export {snackbar}
 
-    const closeSnackbar = (): void => {
-        setSnackbar(currentSnackbar => ({...currentSnackbar, message: null}))
-    }
+export const showSnackbar = (message: string, severity: AppSnackbarSeverity): void => {
+    setSnackbar({message, severity})
+}
 
-    return {snackbar, showSnackbar, closeSnackbar}
+export const closeSnackbar = (): void => {
+    setSnackbar(currentSnackbar => ({...currentSnackbar, message: null}))
 }

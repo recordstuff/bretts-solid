@@ -16,11 +16,10 @@ import { A } from "@solidjs/router"
 import { cancelButtonStyles } from "../styles/interactiveStyles"
 import { lighten } from "@suid/material/styles"
 import { appTheme } from "../theme"
-import AppSnackbar from "../components/AppSnackbar"
 import { takeSuccessMessage } from "../utils/successMessageStorage"
 import { SortDirection } from "../models/SortDirection"
 import { UsersSortColumn } from "../models/UsersSortColumn"
-import { createAppSnackbar } from "../state/AppSnackbar"
+import { showSnackbar } from "../state/AppSnackbar"
 import { AppSnackbarSeverity } from "../models/AppSnackbarState"
 
 const PAGE_SIZE = 5
@@ -74,7 +73,6 @@ const Users: Component = () => {
     const [roleFilter, setRoleFilter] = createSignal<JwtRole>(JwtRole.Any)
     const [sortColumn, setSortColumn] = createSignal(UsersSortColumn.DisplayName)
     const [sortDirection, setSortDirection] = createSignal(SortDirection.Ascending)
-    const {snackbar, showSnackbar, closeSnackbar} = createAppSnackbar()
 
     const fetchUsersState = (): FetchUsersParams => ({
         page: page(),
@@ -202,11 +200,6 @@ const Users: Component = () => {
                     setPage={setPage}
                 />
             </Stack>
-            <AppSnackbar
-                message={snackbar().message}
-                severity={snackbar().severity}
-                onClose={closeSnackbar}
-            />
         </>
     )
 }
