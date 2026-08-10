@@ -87,6 +87,31 @@ export const logoutLinkStyles = {
     },
 }
 
+export const drawerExternalLinkStyles = {
+    alignItems: 'center',
+    alignSelf: 'center',
+    color: 'primary.main',
+    display: 'flex',
+    py: 1,
+    textDecoration: 'underline',
+    textDecorationThickness: '1px',
+    textUnderlineOffset: '0.2em',
+    transition: 'color 120ms ease, text-decoration-thickness 120ms ease, transform 80ms ease',
+    width: 'fit-content',
+    '&:visited': {
+        color: 'primary.main',
+    },
+    '&:hover, &:focus-visible': {
+        color: 'primary.light',
+        textDecorationThickness: '2px',
+    },
+    '&:active': {
+        color: 'primary.dark',
+        textDecorationThickness: '2px',
+        transform: 'translateY(1px) scale(0.98)',
+    },
+}
+
 export const breadcrumbLinkStyles = {
     color: '#566E7A',
     textDecoration: 'underline',
