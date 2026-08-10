@@ -1,5 +1,5 @@
 import PrivateRoute from "../components/PrivateRoute"
-import { AppBar, Box, Divider, Drawer, IconButton, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Toolbar, Typography } from "@suid/material"
+import { AppBar, Box, Divider, Drawer, IconButton, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, SvgIcon, Toolbar, Typography } from "@suid/material"
 import AgricultureIcon from '@suid/icons-material/Agriculture';
 import HomeIcon from '@suid/icons-material/Home';
 import MenuIcon from '@suid/icons-material/Menu';
@@ -17,7 +17,7 @@ import { A, useLocation } from "@solidjs/router";
 import type { RouteSectionProps } from "@solidjs/router";
 import { pageTitle } from "../state/App";
 import { Breadcrumbinator } from "../components/Breadcruminator";
-import { interactiveLinkStyles, logoutLinkStyles, mobileMenuButtonStyles } from "../styles/interactiveStyles";
+import { drawerExternalLinkStyles, interactiveLinkStyles, logoutLinkStyles, mobileMenuButtonStyles } from "../styles/interactiveStyles";
 import { firstBreadcrumb } from "../state/Breadcrumbs";
 
 const drawerWidth = 200
@@ -69,6 +69,7 @@ const menuOptions: DrawerMenuItem[] = [
 ]
 
 interface DrawerContentProps {
+    onExternalNavigate: () => void
     onNavigate: (menuOption: MenuOption) => void
     pathname: string
 }
@@ -80,34 +81,67 @@ const DrawerContent: Component<DrawerContentProps> = (props) => {
             || menuItem.ChildRoutes?.some(childRoute => props.pathname.startsWith(childRoute)) === true)))
 
     return (
-        <List>
-            <For each={menuOptions}>
-                {(menuItem) => {
-                    if (menuItem === divider) {
-                        return <Show when={jwtUtil.hasMultipleRoles()}><Divider /></Show>
-                    }
-
-                    return (
-                        <Show when={jwtUtil.hasRole(menuItem.Role)}>
-                            <ListItem disablePadding>
-                                <ListItemButton
-                                    component={A}
-                                    href={menuItem.Route}
-                                    onClick={() => props.onNavigate(menuItem)}
-                                    selected={menuItem === selectedMenuOption()}
-                                    sx={interactiveLinkStyles}
-                                >
-                                    <ListItemIcon>
-                                        <menuItem.Icon />
-                                    </ListItemIcon>
-                                    <ListItemText primary={menuItem.Text} />
-                                </ListItemButton>
-                            </ListItem>
-                        </Show>
-                    )
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}>
+            <List
+                disablePadding
+                sx={{
+                    '& .MuiListItemButton-root': {
+                        paddingBottom: 'calc(.9em + 1px)',
+                        paddingTop: 'calc(.9em + 1px)',
+                    },
                 }}
-            </For>
-        </List>
+            >
+                <For each={menuOptions}>
+                    {(menuItem) => {
+                        if (menuItem === divider) {
+                            return <Show when={jwtUtil.hasMultipleRoles()}><Divider /></Show>
+                        }
+
+                        return (
+                            <Show when={jwtUtil.hasRole(menuItem.Role)}>
+                                <ListItem disablePadding>
+                                    <ListItemButton
+                                        component={A}
+                                        href={menuItem.Route}
+                                        onClick={() => props.onNavigate(menuItem)}
+                                        selected={menuItem === selectedMenuOption()}
+                                        sx={interactiveLinkStyles}
+                                    >
+                                        <ListItemIcon>
+                                            <menuItem.Icon />
+                                        </ListItemIcon>
+                                        <ListItemText primary={menuItem.Text} />
+                                    </ListItemButton>
+                                </ListItem>
+                            </Show>
+                        )
+                    }}
+                </For>
+            </List>
+            <Stack component="footer" sx={{ mt: 'auto', px: 2, py: 2 }}>
+                <Link
+                    href="https://github.com/recordstuff/bretts-solid"
+                    onClick={props.onExternalNavigate}
+                    rel="noopener noreferrer"
+                    sx={{ ...drawerExternalLinkStyles, gap: 0.5, pb: 1, pt: 0.5 }}
+                    target="_blank"
+                >
+                    <SvgIcon aria-hidden="true" fontSize="small">
+                        <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.66-.22.66-.47v-1.73c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02A9.58 9.58 0 0 1 12 6.8c.85 0 1.71.12 2.5.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85v2.79c0 .25.16.56.67.46A10 10 0 0 0 22 12c0-5.52-4.48-10-10-10" />
+                    </SvgIcon>
+                    GitHub Repo
+                </Link>
+                <Link
+                    href="https://brettdrake.org/"
+                    onClick={props.onExternalNavigate}
+                    rel="noopener noreferrer"
+                    sx={drawerExternalLinkStyles}
+                    target="_blank"
+                >
+                    brettdrake.org
+                </Link>
+            </Stack>
+        </Box>
     )
 }
 
@@ -193,7 +227,11 @@ const Layout: Component<RouteSectionProps> = (props) => {
                             }}
                             variant="temporary"
                         >
-                            <DrawerContent pathname={location.pathname} onNavigate={handleDrawerNavigate} />
+                            <DrawerContent
+                                pathname={location.pathname}
+                                onExternalNavigate={handleDrawerClose}
+                                onNavigate={handleDrawerNavigate}
+                            />
                         </Drawer>
                     </Show>
                     <Drawer
@@ -207,7 +245,11 @@ const Layout: Component<RouteSectionProps> = (props) => {
                         }}
                         variant="permanent"
                     >
-                        <DrawerContent pathname={location.pathname} onNavigate={handleDrawerNavigate} />
+                        <DrawerContent
+                            pathname={location.pathname}
+                            onExternalNavigate={handleDrawerClose}
+                            onNavigate={handleDrawerNavigate}
+                        />
                     </Drawer>
                 </Box>
                 <Box
