@@ -25,8 +25,8 @@ export const appTheme = createTheme({
             contrastText: '#FFFFFF',
         },
         background: {
-            default: paletteColors.background,
-            paper: paletteColors.surface,
+            default: paletteColors.surface,
+            paper: paletteColors.background,
         },
         text: {
             primary: paletteColors.darkest,
