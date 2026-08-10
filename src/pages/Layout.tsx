@@ -82,7 +82,15 @@ const DrawerContent: Component<DrawerContentProps> = (props) => {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}>
-            <List disablePadding>
+            <List
+                disablePadding
+                sx={{
+                    '& .MuiListItemButton-root': {
+                        paddingBottom: 'calc(.9em + 1px)',
+                        paddingTop: 'calc(.9em + 1px)',
+                    },
+                }}
+            >
                 <For each={menuOptions}>
                     {(menuItem) => {
                         if (menuItem === divider) {
