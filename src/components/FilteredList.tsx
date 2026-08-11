@@ -16,6 +16,9 @@ const FilteredList: Component<Props> = ({ label, items, handleClick }) => {
         <Box
             sx={{
                 minHeight: '9rem',
+                '& .MuiInputLabel-root': {
+                    fontWeight: 400,
+                },
             }}
         >
             <TextFilter
