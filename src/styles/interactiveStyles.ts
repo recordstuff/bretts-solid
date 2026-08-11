@@ -56,12 +56,13 @@ export const mobileMenuButtonStyles = {
 }
 
 export const cancelButtonStyles = {
+    color: 'primary.main',
     '&:hover, &:focus-visible': {
-        bgcolor: '#D8C4BE',
+        bgcolor: 'action.hover',
         color: 'text.primary',
     },
     '&:active': {
-        bgcolor: 'secondary.light',
+        bgcolor: 'action.selected',
         color: 'text.primary',
     },
 }
@@ -81,7 +82,7 @@ export const logoutLinkStyles = {
         textDecoration: 'none',
     },
     '&:active': {
-        color: '#E3D2CD',
+        color: 'secondary.light',
         fontWeight: 700,
         textDecoration: 'none',
     },
@@ -113,21 +114,21 @@ export const drawerExternalLinkStyles = {
 }
 
 export const breadcrumbLinkStyles = {
-    color: '#566E7A',
+    color: 'primary.main',
     textDecoration: 'underline',
     textDecorationThickness: '1px',
     textUnderlineOffset: '0.2em',
     transition: 'color 120ms ease, text-decoration-thickness 120ms ease',
     '&:visited': {
-        color: '#566E7A',
+        color: 'primary.main',
     },
     '&:hover, &:focus-visible': {
-        color: '#6F8792',
+        color: 'primary.light',
         fontWeight: 500,
         textDecorationThickness: '2px',
     },
     '&:active': {
-        color: '#354C58',
+        color: 'primary.dark',
         fontWeight: 700,
         textDecorationThickness: '3px',
     },

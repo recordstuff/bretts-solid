@@ -4,7 +4,7 @@ export const readableOutlinedFieldsStyles = {
         fontWeight: 500,
     },
     '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: 'primary.light',
+        borderColor: 'divider',
     },
     '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
         borderColor: 'primary.main',
@@ -22,7 +22,7 @@ export const sampleCredentialButtonStyles = {
         color: 'primary.dark',
     },
     '&:active': {
-        bgcolor: 'primary.light',
-        color: 'primary.contrastText',
+        bgcolor: 'action.selected',
+        color: 'primary.dark',
     },
 }

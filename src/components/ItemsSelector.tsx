@@ -46,7 +46,7 @@ const ItemsSelector: Component<Props> = ({ allItems, label, selected, setSelecte
             component='fieldset'
             sx={{
                 border: '1px solid',
-                borderColor: 'primary.light',
+                borderColor: 'divider',
                 borderRadius: 1,
                 margin: 0,
                 minWidth: 0,

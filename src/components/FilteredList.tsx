@@ -15,11 +15,7 @@ const FilteredList: Component<Props> = ({ label, items, handleClick }) => {
     return (
         <Box
             sx={{
-                border: '1px solid',
-                borderColor: 'secondary.main',
-                borderRadius: 1,
                 minHeight: '9rem',
-                overflow: 'hidden',
             }}
         >
             <TextFilter
