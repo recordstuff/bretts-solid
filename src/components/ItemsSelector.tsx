@@ -42,8 +42,18 @@ const ItemsSelector: Component<Props> = ({ allItems, label, selected, setSelecte
     })
 
     return (
-        <Box>
-            <Typography paddingTop={1} paddingBottom={.5}>{label}</Typography>
+        <Box
+            component='fieldset'
+            sx={{
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: 1,
+                margin: 0,
+                minWidth: 0,
+                padding: 2,
+            }}
+        >
+            <Typography component='legend' color='text.primary' fontWeight={500} paddingX={.75}>{label}</Typography>
             <Grid container direction='row'>
                 <Grid item sm={12} md={5}>
                     <FilteredList

@@ -13,13 +13,20 @@ const FilteredList: Component<Props> = ({ label, items, handleClick }) => {
     const [searchText, setSearchText] = createSignal('')
 
     return (
-        <Box>
+        <Box
+            sx={{
+                minHeight: '9rem',
+                '& .MuiInputLabel-root': {
+                    fontWeight: 400,
+                },
+            }}
+        >
             <TextFilter
                 label={`Filter ${label}`}
                 searchText={searchText}
                 setSearchText={setSearchText}
             />
-            <List>
+            <List sx={{ paddingY: .5 }}>
                 {items().map((item) => (
                     (searchText().length === 0 || item.Name.toLowerCase().includes(searchText().toLowerCase()))
                     && <ListItemButton

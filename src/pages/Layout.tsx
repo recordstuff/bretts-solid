@@ -221,6 +221,7 @@ const Layout: Component<RouteSectionProps> = (props) => {
                             sx={{
                                 display: { xs: 'block', sm: 'none' },
                                 '& .MuiDrawer-paper': {
+                                    bgcolor: 'background.default',
                                     boxSizing: 'border-box',
                                     width: drawerWidth,
                                 },
@@ -239,6 +240,7 @@ const Layout: Component<RouteSectionProps> = (props) => {
                         sx={{
                             display: { xs: 'none', sm: 'block' },
                             '& .MuiDrawer-paper': {
+                                bgcolor: 'background.default',
                                 boxSizing: 'border-box',
                                 width: drawerWidth,
                             },
@@ -254,7 +256,7 @@ const Layout: Component<RouteSectionProps> = (props) => {
                 </Box>
                 <Box
                     component="main"
-                    sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
+                    sx={{ flexGrow: 1, bgcolor: 'background.paper', p: 3 }}
                 >
                     <Stack>
                         <Toolbar />

@@ -1,12 +1,12 @@
 import { createTheme } from '@suid/material/styles'
 
 export const paletteColors = {
-    darkest: '#543622',
-    primary: '#725444',
-    muted: '#8F7265',
-    border: '#C0A099',
-    background: '#F2E9E4',
-    surface: '#FFFDFC',
+    darkest: '#3D315B',
+    primary: '#5F4B8B',
+    muted: '#8E7DBE',
+    border: '#C9BDE8',
+    background: '#F4F1FA',
+    surface: '#FFFFFF',
 } as const
 
 export const appTheme = createTheme({
@@ -20,7 +20,7 @@ export const appTheme = createTheme({
         },
         secondary: {
             light: paletteColors.border,
-            main: '#806052',
+            main: paletteColors.primary,
             dark: paletteColors.darkest,
             contrastText: '#FFFFFF',
         },
@@ -36,7 +36,7 @@ export const appTheme = createTheme({
         divider: paletteColors.border,
         action: {
             active: paletteColors.primary,
-            hover: '#E6D8D4',
+            hover: paletteColors.background,
             selected: paletteColors.border,
             focus: paletteColors.muted,
         },
