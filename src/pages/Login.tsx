@@ -9,6 +9,7 @@ import { useNavigate } from "@solidjs/router"
 import { clearAllWaits } from "../state/PleaseWait"
 import { closeSnackbar, showSnackbar } from "../state/AppSnackbar"
 import { AppSnackbarSeverity } from "../models/AppSnackbarState"
+import { readableOutlinedFieldsStyles, sampleCredentialButtonStyles } from "../styles/formStyles"
 
 const Login: Component = () => {
 
@@ -72,10 +73,12 @@ const Login: Component = () => {
                 variant="outlined"
                 sx={{
                     width: '100%',
-                    maxWidth: '36rem',
+                    maxWidth: '40rem',
                     padding: { xs: 2, sm: 3 },
-                    borderColor: 'divider',
+                    borderColor: 'primary.light',
+                    borderWidth: 2,
                     transform: { xl: 'translateY(-4rem)' },
+                    ...readableOutlinedFieldsStyles,
                 }}>
                 <Grid container direction="column" spacing={2}>
                     <Grid item>
@@ -89,9 +92,9 @@ const Login: Component = () => {
                                 display: 'grid',
                                 gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' },
                             }}>
-                            <Button onClick={() => populateCredentials(defaultUserCredentials())}>Admin and User rights</Button>
-                            <Button onClick={() => populateCredentials({ Email: 'adminonly@brettdrake.org', Password: 'test123' })}>Admin rights only</Button>
-                            <Button onClick={() => populateCredentials({ Email: 'useronly@brettdrake.org', Password: 'test123' })}>User rights only</Button>
+                            <Button onClick={() => populateCredentials(defaultUserCredentials())} sx={sampleCredentialButtonStyles}>Admin and User rights</Button>
+                            <Button onClick={() => populateCredentials({ Email: 'adminonly@brettdrake.org', Password: 'test123' })} sx={sampleCredentialButtonStyles}>Admin rights only</Button>
+                            <Button onClick={() => populateCredentials({ Email: 'useronly@brettdrake.org', Password: 'test123' })} sx={sampleCredentialButtonStyles}>User rights only</Button>
                         </Box>
                     </Grid>
                     <Grid item>
@@ -123,7 +126,7 @@ const Login: Component = () => {
                     <Grid item>
                         <Button
                             fullWidth
-                            variant="outlined"
+                            variant="contained"
                             color="primary"
                             onClick={login}
                             disabled={useErrorCondition() && (userCredentials().Email.length === 0 || userCredentials().Password.length === 0)}>

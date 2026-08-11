@@ -17,6 +17,7 @@ import YesNoDialog from "../components/YesNoDialog"
 import { storeSuccessMessage, takeSuccessMessage } from "../utils/successMessageStorage"
 import { showSnackbar } from "../state/AppSnackbar"
 import { AppSnackbarSeverity } from "../models/AppSnackbarState"
+import { readableOutlinedFieldsStyles } from "../styles/formStyles"
 
 const User: Component = () => {
 
@@ -135,7 +136,7 @@ const User: Component = () => {
     }
 
     return (
-        <Stack margin={2} spacing={4}>
+        <Stack margin={2} spacing={4} sx={{ maxWidth: '75rem', ...readableOutlinedFieldsStyles }}>
             {id() !== undefined && <TextField fullWidth label="Id" value={user().Guid} disabled />}
             <TextField fullWidth label="Display Name" name='DisplayName' onChange={handleChange} value={user().DisplayName} />
             <TextField fullWidth label="Email" name='Email' onChange={handleChange} value={user().Email} />
