@@ -1,15 +1,13 @@
 import { Box, Button, Grid, Link, Paper, TextField } from "@suid/material"
-import { HTTP_STATUS_CODES } from "../services/HttpClient"
+import { HTTP_STATUS_CODES, isHttpStatusError } from "../services/HttpClient"
 import { jwtUtil } from "../wrappers/JwtUtil"
 import { defaultUserCredentials, UserCredentials } from "../models/UserCredentials"
-import { AxiosError } from "axios"
 import { userClient } from "../services/UserClient"
 import { Component, createSignal, onMount } from "solid-js"
 import { useNavigate } from "@solidjs/router"
 import { clearAllWaits } from "../state/PleaseWait"
 import { closeSnackbar, showSnackbar } from "../state/AppSnackbar"
 import { AppSnackbarSeverity } from "../models/AppSnackbarState"
-import { readableOutlinedFieldsStyles, sampleCredentialButtonStyles } from "../styles/formStyles"
 
 const Login: Component = () => {
 
@@ -32,7 +30,7 @@ const Login: Component = () => {
         }
         catch (ex: unknown) {
             clearAllWaits()
-            if (ex instanceof AxiosError && ex.response?.status === HTTP_STATUS_CODES.UNAUTHORIZED) {
+            if (isHttpStatusError(ex, HTTP_STATUS_CODES.UNAUTHORIZED)) {
                 showSnackbar('The Email or Password was incorrect.', AppSnackbarSeverity.Warning)
                 return
             }
@@ -70,6 +68,7 @@ const Login: Component = () => {
                 paddingTop: { xs: 4, sm: 2 },
             }}>
             <Paper
+                class="readable-outlined-fields"
                 variant="outlined"
                 sx={{
                     width: '100%',
@@ -78,7 +77,6 @@ const Login: Component = () => {
                     borderColor: 'primary.light',
                     borderWidth: 2,
                     transform: { xl: 'translateY(-4rem)' },
-                    ...readableOutlinedFieldsStyles,
                 }}>
                 <Grid container direction="column" spacing={2}>
                     <Grid item>
@@ -92,9 +90,9 @@ const Login: Component = () => {
                                 display: 'grid',
                                 gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' },
                             }}>
-                            <Button onClick={() => populateCredentials(defaultUserCredentials())} sx={sampleCredentialButtonStyles}>Admin and User rights</Button>
-                            <Button onClick={() => populateCredentials({ Email: 'adminonly@brettdrake.org', Password: 'test123' })} sx={sampleCredentialButtonStyles}>Admin rights only</Button>
-                            <Button onClick={() => populateCredentials({ Email: 'useronly@brettdrake.org', Password: 'test123' })} sx={sampleCredentialButtonStyles}>User rights only</Button>
+                            <Button class="sample-credential-button" onClick={() => populateCredentials(defaultUserCredentials())}>Admin and User rights</Button>
+                            <Button class="sample-credential-button" onClick={() => populateCredentials({ Email: 'adminonly@brettdrake.org', Password: 'test123' })}>Admin rights only</Button>
+                            <Button class="sample-credential-button" onClick={() => populateCredentials({ Email: 'useronly@brettdrake.org', Password: 'test123' })}>User rights only</Button>
                         </Box>
                     </Grid>
                     <Grid item>

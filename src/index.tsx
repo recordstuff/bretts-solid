@@ -16,12 +16,30 @@ import Users from './pages/Users'
 import User from './pages/User'
 import Role from './pages/Role'
 import Roles from './pages/Roles'
-import { CssBaseline, GlobalStyles } from '@suid/material'
-import { ThemeProvider } from '@suid/material/styles'
+import { CssBaseline } from '@suid/material'
+import { lighten, ThemeProvider } from '@suid/material/styles'
 import { appTheme } from './theme'
 import ErrorBoundary from './components/ErrorBoundary'
 
 const root = document.getElementById('root')
+
+const cssVariables = {
+    '--app-action-hover': appTheme.palette.action.hover,
+    '--app-action-selected': appTheme.palette.action.selected,
+    '--app-background-paper': appTheme.palette.background.paper,
+    '--app-divider': appTheme.palette.divider,
+    '--app-primary-dark': appTheme.palette.primary.dark,
+    '--app-primary-main': appTheme.palette.primary.main,
+    '--app-secondary-light': appTheme.palette.secondary.light,
+    '--app-text-primary': appTheme.palette.text.primary,
+    '--app-text-secondary': appTheme.palette.text.secondary,
+    '--sortable-heading-active': lighten(appTheme.palette.secondary.light, 0.15),
+    '--sortable-heading-hover': lighten(appTheme.palette.secondary.light, 0.3),
+}
+
+Object.entries(cssVariables).forEach(([name, value]) => {
+    document.documentElement.style.setProperty(name, value)
+})
 
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
     throw new Error(
@@ -32,23 +50,6 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 render(() => (
     <ThemeProvider theme={appTheme}>
         <CssBaseline />
-        <GlobalStyles
-            styles={{
-                '::selection': {
-                    backgroundColor: appTheme.palette.secondary.light,
-                    color: appTheme.palette.text.primary,
-                },
-                '.MuiTableHead-root .MuiTableRow-root': {
-                    backgroundColor: appTheme.palette.action.selected,
-                },
-                '.MuiTableBody-root .MuiTableRow-root:nth-of-type(odd)': {
-                    backgroundColor: appTheme.palette.action.hover,
-                },
-                '.MuiTableBody-root .MuiTableRow-root:nth-of-type(even)': {
-                    backgroundColor: appTheme.palette.background.paper,
-                },
-            }}
-        />
         <ErrorBoundary>
             <PleaseWait />
             <Router root={App}>

@@ -1,20 +1,18 @@
-import { Button, Stack, TextField } from '@suid/material'
+import { TextField } from '@suid/material'
 import { useNavigate, useParams } from '@solidjs/router'
-import { AxiosError } from 'axios'
-import { Component, createEffect, createResource, createSignal } from 'solid-js'
+import { Component, createEffect, createResource, createSignal, Show } from 'solid-js'
+import EntityFormActions from '../components/EntityFormActions'
 import YesNoDialog from '../components/YesNoDialog'
 import { AppSnackbarSeverity } from '../models/AppSnackbarState'
 import { NameGuidPair } from '../models/NameGuidPair'
 import { RoleNew } from '../models/RoleNew'
-import { HTTP_STATUS_CODES } from '../services/HttpClient'
+import { HTTP_STATUS_CODES, isHttpStatusError } from '../services/HttpClient'
 import { roleClient } from '../services/RoleClient'
 import { setPageTitle } from '../state/App'
 import { showSnackbar } from '../state/AppSnackbar'
 import { addBreadcrumb } from '../state/Breadcrumbs'
 import { clearAllWaits } from '../state/PleaseWait'
-import { readableOutlinedFieldsStyles } from '../styles/formStyles'
-import { cancelButtonStyles, deleteButtonStyles } from '../styles/interactiveStyles'
-import { storeSuccessMessage, takeSuccessMessage } from '../utils/successMessageStorage'
+import { showStoredSuccessMessage, storeSuccessMessage } from '../utils/successMessageStorage'
 
 const emptyRole = (): NameGuidPair => ({ Guid: '', Name: '' })
 
@@ -47,11 +45,7 @@ const Role: Component = () => {
             return
         }
 
-        const storedSuccessMessage = takeSuccessMessage()
-
-        if (storedSuccessMessage !== null) {
-            showSnackbar(storedSuccessMessage, AppSnackbarSeverity.Success)
-        }
+        showStoredSuccessMessage()
     })
 
     const handleChange = (_event: { target: { value: unknown } }, value: string): void => {
@@ -84,8 +78,7 @@ const Role: Component = () => {
         catch (exception: unknown) {
             clearAllWaits()
 
-            if (exception instanceof AxiosError
-             && exception.response?.status === HTTP_STATUS_CODES.CONFLICT) {
+            if (isHttpStatusError(exception, HTTP_STATUS_CODES.CONFLICT)) {
                 showSnackbar('A role with this name already exists.', AppSnackbarSeverity.Warning)
                 return
             }
@@ -120,8 +113,7 @@ const Role: Component = () => {
         catch (exception: unknown) {
             clearAllWaits()
 
-            if (exception instanceof AxiosError
-             && exception.response?.status === HTTP_STATUS_CODES.CONFLICT) {
+            if (isHttpStatusError(exception, HTTP_STATUS_CODES.CONFLICT)) {
                 showSnackbar('This role is assigned to one or more users and cannot be deleted.', AppSnackbarSeverity.Warning)
                 return
             }
@@ -130,38 +122,25 @@ const Role: Component = () => {
         }
     }
 
-    const saveButtonText = (): string => {
-        if (isEdit()) {
-            return 'Save'
-        }
-
-        return 'Add'
-    }
-
-    const cancelButtonText = (): string => {
-        if (isEdit()) {
-            return 'Reset Form'
-        }
-
-        return 'Cancel'
-    }
-
     return (
-        <Stack margin={2} spacing={4} sx={{ maxWidth: '75rem', ...readableOutlinedFieldsStyles }}>
-            {isEdit() && <TextField fullWidth label="Id" value={role().Guid} disabled />}
+        <div class="entity-form readable-outlined-fields">
+            <Show when={isEdit()}>
+                <TextField fullWidth label="Id" value={role().Guid} disabled />
+            </Show>
             <TextField fullWidth label="Name" name="Name" onChange={handleChange} value={role().Name} />
-            <Stack direction="row" spacing={2}>
-                <Button onClick={upsert} color="primary" variant="contained">{saveButtonText()}</Button>
-                <Button color="secondary" onClick={handleCancel} sx={cancelButtonStyles}>{cancelButtonText()}</Button>
-                {isEdit() && <Button variant="contained" color="error" onClick={() => setDeleteDialogOpen(true)} sx={deleteButtonStyles}>Delete</Button>}
-            </Stack>
+            <EntityFormActions
+                isEdit={isEdit()}
+                onCancel={handleCancel}
+                onDelete={() => setDeleteDialogOpen(true)}
+                onSave={upsert}
+            />
             <YesNoDialog
                 open={deleteDialogOpen()}
                 question="Are you sure you want to delete this role?"
                 onNo={() => setDeleteDialogOpen(false)}
                 onYes={handleDelete}
             />
-        </Stack>
+        </div>
     )
 }
 
