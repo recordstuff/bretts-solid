@@ -103,13 +103,13 @@ const User: Component = () => {
         }
     }
 
-    const handleCancel = (): void => {
+    const handleCancel = async (): Promise<void> => {
         if (id() === undefined) {
             navigate(-1)
+            return
         }
-        else {
-            refetch()
-        }
+
+        await refetch()
     }
 
     const handleDelete = async (): Promise<void> => {

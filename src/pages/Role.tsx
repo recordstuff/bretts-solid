@@ -78,13 +78,13 @@ const Role: Component = () => {
         }
     }
 
-    const handleCancel = (): void => {
+    const handleCancel = async (): Promise<void> => {
         if (!isEdit()) {
             navigate(-1)
             return
         }
 
-        refetch()
+        await refetch()
     }
 
     const handleDelete = async (): Promise<void> => {
