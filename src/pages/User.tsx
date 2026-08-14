@@ -39,7 +39,7 @@ const User: Component = () => {
     }
 
     const fetchRoles = async (): Promise<NameGuidPair[]> => {
-        const roles = await roleClient.getRoles()
+        const roles = await roleClient.getAllRoles()
 
         return roles;
     }
