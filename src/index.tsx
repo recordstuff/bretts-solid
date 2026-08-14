@@ -14,6 +14,8 @@ import Settings from './pages/Settings'
 import { PleaseWait } from './components/PleaseWait'
 import Users from './pages/Users'
 import User from './pages/User'
+import Role from './pages/Role'
+import Roles from './pages/Roles'
 import { CssBaseline, GlobalStyles } from '@suid/material'
 import { ThemeProvider } from '@suid/material/styles'
 import { appTheme } from './theme'
@@ -58,6 +60,8 @@ render(() => (
                     <Route path="gridexample" component={GridExample} />
                     <Route path="users" component={Users} />
                     <Route path="user/:id?" component={User} />
+                    <Route path="roles" component={Roles} />
+                    <Route path="role/:id?" component={Role} />
                     <Route path="settings" component={Settings} />
                 </Route>
                 <Route path="*" component={NotFound} />
