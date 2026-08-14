@@ -42,7 +42,7 @@ const User: Component = () => {
         return roles;
     }
 
-    const [user, { mutate, refetch }] = createResource(id, fetchUser, { initialValue: emptyUserDetail() })
+    const [user, { mutate, refetch: reloadUser }] = createResource(id, fetchUser, { initialValue: emptyUserDetail() })
     const [roles] = createResource(getAllRoles, { initialValue: [] })
 
     createEffect(() => {
@@ -103,13 +103,13 @@ const User: Component = () => {
         }
     }
 
-    const handleCancel = (): void => {
+    const handleCancel = async (): Promise<void> => {
         if (id() === undefined) {
             navigate(-1)
+            return
         }
-        else {
-            refetch()
-        }
+
+        await reloadUser()
     }
 
     const handleDelete = async (): Promise<void> => {

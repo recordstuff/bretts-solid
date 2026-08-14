@@ -23,7 +23,7 @@ const Role: Component = () => {
     const navigate = useNavigate()
 
     const getRole = (roleId: string): Promise<NameGuidPair> => roleClient.getRole(roleId)
-    const [role, { mutate, refetch }] = createResource(id, getRole, { initialValue: emptyRole() })
+    const [role, { mutate, refetch: reloadRole }] = createResource(id, getRole, { initialValue: emptyRole() })
 
     createEffect(() => {
         const roleId = id()
@@ -78,13 +78,13 @@ const Role: Component = () => {
         }
     }
 
-    const handleCancel = (): void => {
+    const handleCancel = async (): Promise<void> => {
         if (!isEdit()) {
             navigate(-1)
             return
         }
 
-        refetch()
+        await reloadRole()
     }
 
     const handleDelete = async (): Promise<void> => {
