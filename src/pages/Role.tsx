@@ -12,7 +12,6 @@ import { setPageTitle } from '../state/App'
 import { showSnackbar } from '../state/AppSnackbar'
 import { addBreadcrumb } from '../state/Breadcrumbs'
 import { clearAllWaits } from '../state/PleaseWait'
-import { showStoredSuccessMessage, storeSuccessMessage } from '../utils/successMessageStorage'
 
 const emptyRole = (): NameGuidPair => ({ Guid: '', Name: '' })
 
@@ -40,14 +39,6 @@ const Role: Component = () => {
         addBreadcrumb({ title: pageTitle, url })
     })
 
-    createEffect(() => {
-        if (!isEdit()) {
-            return
-        }
-
-        showStoredSuccessMessage()
-    })
-
     const handleChange = (_event: { target: { value: unknown } }, value: string): void => {
         mutate({ ...role(), Name: value })
     }
@@ -65,7 +56,7 @@ const Role: Component = () => {
                 const newRole: RoleNew = { Name: roleName }
                 const roleDetail = await roleClient.insertRole(newRole)
 
-                storeSuccessMessage('This role was created.')
+                showSnackbar('This role was created.', AppSnackbarSeverity.Success)
                 navigate(`/role/${roleDetail.Guid}`)
             }
             else {
@@ -107,7 +98,7 @@ const Role: Component = () => {
 
         try {
             await roleClient.deleteRole(roleId)
-            storeSuccessMessage('This role was deleted.')
+            showSnackbar('This role was deleted.', AppSnackbarSeverity.Success)
             navigate('/roles')
         }
         catch (exception: unknown) {

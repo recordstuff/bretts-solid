@@ -12,7 +12,6 @@ import { roleClient } from '../services/RoleClient'
 import { setPageTitle } from '../state/App'
 import { firstBreadcrumb } from '../state/Breadcrumbs'
 import { createTableSort } from '../utils/createTableSort'
-import { showStoredSuccessMessage } from '../utils/successMessageStorage'
 
 const ROLE_SORT_COLUMNS = [
     { label: 'Id', column: RolesSortColumn.Id },
@@ -44,8 +43,6 @@ const Roles: Component = () => {
     onMount(() => {
         setPageTitle('Roles')
         firstBreadcrumb({ title: 'Roles', url: '/roles' })
-
-        showStoredSuccessMessage()
     })
 
     return (

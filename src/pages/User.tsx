@@ -13,7 +13,6 @@ import { setPageTitle } from "../state/App"
 import { clearAllWaits } from "../state/PleaseWait"
 import { addBreadcrumb } from "../state/Breadcrumbs"
 import YesNoDialog from "../components/YesNoDialog"
-import { showStoredSuccessMessage, storeSuccessMessage } from "../utils/successMessageStorage"
 import { showSnackbar } from "../state/AppSnackbar"
 import { AppSnackbarSeverity } from "../models/AppSnackbarState"
 
@@ -63,13 +62,6 @@ const User: Component = () => {
         addBreadcrumb({ title: pageTitle, url })
     })
 
-    createEffect(() => {
-        if (isEdit()) {
-            showStoredSuccessMessage()
-        }
-    })
-
-
     const handleChange = (event: { target: { name: string; value: any } }, value: any): void => {
         if (event.target.name === 'Password') {
             setPassword(value)
@@ -88,7 +80,7 @@ const User: Component = () => {
                 newUser.Roles = selectedRoles()
 
                 const userDetail = await userClient.insertUser(newUser)
-                storeSuccessMessage('This user was created.')
+                showSnackbar('This user was created.', AppSnackbarSeverity.Success)
                 navigate(`/user/${userDetail.Guid}`)
             }
             else {
@@ -126,7 +118,7 @@ const User: Component = () => {
 
         setDeleteDialogOpen(false)
         await userClient.deleteUser(userId)
-        storeSuccessMessage('This user was deleted.')
+        showSnackbar('This user was deleted.', AppSnackbarSeverity.Success)
         navigate('/users')
     }
 

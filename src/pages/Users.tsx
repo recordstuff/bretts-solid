@@ -9,7 +9,6 @@ import TwoElementGuide from "../components/TwoElementGuide"
 import { Component, createResource, createSignal, onMount } from "solid-js"
 import { setPageTitle } from "../state/App"
 import { firstBreadcrumb } from "../state/Breadcrumbs"
-import { showStoredSuccessMessage } from "../utils/successMessageStorage"
 import { SortDirection } from "../models/SortDirection"
 import { UsersSortColumn } from "../models/UsersSortColumn"
 import PaginatedEntityList from "../components/PaginatedEntityList"
@@ -51,8 +50,6 @@ const Users: Component = () => {
     onMount(() => {
         setPageTitle('Users')
         firstBreadcrumb({title:'Users', url: '/users'})
-
-        showStoredSuccessMessage()
     })
 
     return (
