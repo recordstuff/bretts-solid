@@ -38,14 +38,14 @@ const User: Component = () => {
         return user
     }
 
-    const fetchAllRoles = async (): Promise<NameGuidPair[]> => {
+    const getAllRoles = async (): Promise<NameGuidPair[]> => {
         const roles = await roleClient.getAllRoles()
 
         return roles;
     }
 
     const [user, { mutate, refetch }] = createResource(id, fetchUser, { initialValue: emptyUserDetail() })
-    const [roles] = createResource(fetchAllRoles, { initialValue: [] })
+    const [roles] = createResource(getAllRoles, { initialValue: [] })
 
     createEffect(() => {
         const userId = id()
