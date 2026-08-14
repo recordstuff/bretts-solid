@@ -87,32 +87,33 @@ const User: Component = () => {
     }
 
     const upsert = async (): Promise<void> => {
-        if (id() === undefined) {
-            const newUser: UserNew = { ...user(), Password: password() }
-            newUser.Roles = selectedRoles()
+        try {
+            if (id() === undefined) {
+                const newUser: UserNew = { ...user(), Password: password() }
+                newUser.Roles = selectedRoles()
 
-            try {
                 const userDetail = await userClient.insertUser(newUser)
                 storeSuccessMessage('This user was created.')
                 navigate(`/user/${userDetail.Guid}`)
             }
-            catch (ex: unknown) {
-                clearAllWaits()
-                if (ex instanceof AxiosError
-                    && ex.response?.status === HTTP_STATUS_CODES.CONFLICT) {
-                    // email already exists
-                    return
-                }
+            else {
+                const updatedUser = { ...user() }
+                updatedUser.Roles = selectedRoles()
 
-                throw ex
+                mutate(await userClient.updateUser(updatedUser))
+                showSnackbar('This user was saved.', AppSnackbarSeverity.Success)
             }
         }
-        else {
-            const newUser = { ...user() }
-            newUser.Roles = selectedRoles()
+        catch (ex: unknown) {
+            clearAllWaits()
 
-            mutate(await userClient.updateUser(newUser))
-            showSnackbar('This user was saved.', AppSnackbarSeverity.Success)
+            if (ex instanceof AxiosError
+             && ex.response?.status === HTTP_STATUS_CODES.CONFLICT) {
+                showSnackbar('A user with this email already exists.', AppSnackbarSeverity.Warning)
+                return
+            }
+
+            throw ex
         }
     }
 
