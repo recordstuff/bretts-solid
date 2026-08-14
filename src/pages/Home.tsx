@@ -1,4 +1,5 @@
 import AgricultureIcon from '@suid/icons-material/Agriculture'
+import AdminPanelSettingsIcon from '@suid/icons-material/AdminPanelSettings'
 import PeopleIcon from '@suid/icons-material/People'
 import SettingsIcon from '@suid/icons-material/Settings'
 import TableChartIcon from '@suid/icons-material/TableChart'
@@ -46,7 +47,7 @@ const Home: Component = () => {
             <div>
                 <Typography variant="h5" gutterBottom>Project options</Typography>
                 <Typography>
-                    Use the menu to explore examples of common application layouts and, if you are an administrator, manage users and settings.
+                    Use the menu to explore examples of common application layouts and, if you are an administrator, manage users, roles, and settings.
                 </Typography>
             </div>
 
@@ -88,6 +89,16 @@ const Home: Component = () => {
                 </Stack>
                 <Typography>
                     The project's most complete working feature manages real user data through a full set of CRUD operations. Administrators can search and filter users, create accounts, edit user details and role assignments, and delete users.
+                </Typography>
+            </OptionCard>
+
+            <OptionCard href="/roles">
+                <Stack direction="row" spacing={1} alignItems="center" mb={1}>
+                    <AdminPanelSettingsIcon />
+                    <Typography variant="h6">Roles</Typography>
+                </Stack>
+                <Typography>
+                    Administrators can search and sort roles, create new roles, rename existing roles, and delete roles that are not assigned to users. Duplicate role names are prevented.
                 </Typography>
             </OptionCard>
 

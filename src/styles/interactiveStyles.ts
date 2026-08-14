@@ -55,18 +55,6 @@ export const mobileMenuButtonStyles = {
     },
 }
 
-export const cancelButtonStyles = {
-    color: 'primary.main',
-    '&:hover, &:focus-visible': {
-        bgcolor: 'action.hover',
-        color: 'text.primary',
-    },
-    '&:active': {
-        bgcolor: 'action.selected',
-        color: 'text.primary',
-    },
-}
-
 export const logoutLinkStyles = {
     color: 'inherit',
     fontSize: '.9em',
@@ -131,14 +119,5 @@ export const breadcrumbLinkStyles = {
         color: 'primary.dark',
         fontWeight: 700,
         textDecorationThickness: '3px',
-    },
-}
-
-export const deleteButtonStyles = {
-    '&:hover, &:focus-visible': {
-        bgcolor: '#B3261E',
-    },
-    '&:active': {
-        bgcolor: '#8F1712',
     },
 }

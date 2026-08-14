@@ -8,6 +8,10 @@ export enum HTTP_STATUS_CODES {
     UNAUTHORIZED = 401
 }
 
+export const isHttpStatusError = (error: unknown, status: HTTP_STATUS_CODES): boolean => (
+    error instanceof AxiosError && error.response?.status === status
+)
+
 const headers: Readonly<Record<string, string | boolean>> = {
     "Accept": "application/json",
     "Content-Type": "application/json; charset=utf-8",

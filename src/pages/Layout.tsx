@@ -1,6 +1,7 @@
 import PrivateRoute from "../components/PrivateRoute"
 import { AppBar, Box, Divider, Drawer, IconButton, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, SvgIcon, Toolbar, Typography } from "@suid/material"
 import AgricultureIcon from '@suid/icons-material/Agriculture';
+import AdminPanelSettingsIcon from '@suid/icons-material/AdminPanelSettings';
 import HomeIcon from '@suid/icons-material/Home';
 import MenuIcon from '@suid/icons-material/Menu';
 import PeopleIcon from '@suid/icons-material/People';
@@ -58,6 +59,14 @@ const menuOptions: DrawerMenuItem[] = [
         Role: JwtRole.Admin,
         Breadcrumb: { title: "Users", url: "/users" },
         ChildRoutes: ['/user']
+    },
+    {
+        Text: "Roles",
+        Route: "/roles",
+        Icon: AdminPanelSettingsIcon,
+        Role: JwtRole.Admin,
+        Breadcrumb: { title: "Roles", url: "/roles" },
+        ChildRoutes: ['/role']
     },
     {
         Text: "Settings",

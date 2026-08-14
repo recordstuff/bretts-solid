@@ -11,3 +11,149 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+::selection {
+  background-color: var(--app-secondary-light);
+  color: var(--app-text-primary);
+}
+
+.MuiTableHead-root .MuiTableRow-root {
+  background-color: var(--app-action-selected);
+}
+
+.MuiTableBody-root .MuiTableRow-root:nth-of-type(odd) {
+  background-color: var(--app-action-hover);
+}
+
+.MuiTableBody-root .MuiTableRow-root:nth-of-type(even) {
+  background-color: var(--app-background-paper);
+}
+
+.entity-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 1rem;
+  max-width: 75rem;
+}
+
+.entity-form-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.add-entity-button-container {
+  margin-bottom: 1rem;
+  margin-left: -0.5rem;
+  margin-top: 0.5rem;
+}
+
+.paginated-entity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.readable-outlined-fields .MuiInputLabel-root {
+  color: var(--app-text-primary);
+  font-weight: 500;
+}
+
+.readable-outlined-fields .MuiOutlinedInput-notchedOutline {
+  border-color: var(--app-divider);
+}
+
+.readable-outlined-fields .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: var(--app-primary-main);
+}
+
+.readable-outlined-fields .MuiInputBase-input.Mui-disabled {
+  -webkit-text-fill-color: var(--app-text-secondary);
+  opacity: 1;
+}
+
+.MuiButton-root.sample-credential-button,
+.MuiButton-root.secondary-action-button {
+  color: var(--app-primary-main);
+}
+
+.MuiButton-root.sample-credential-button:hover,
+.MuiButton-root.sample-credential-button:focus-visible {
+  background-color: var(--app-action-hover);
+  color: var(--app-primary-dark);
+}
+
+.MuiButton-root.sample-credential-button:active {
+  background-color: var(--app-action-selected);
+  color: var(--app-primary-dark);
+}
+
+.MuiButton-root.secondary-action-button:hover,
+.MuiButton-root.secondary-action-button:focus-visible {
+  background-color: var(--app-action-hover);
+  color: var(--app-text-primary);
+}
+
+.MuiButton-root.secondary-action-button:active {
+  background-color: var(--app-action-selected);
+  color: var(--app-text-primary);
+}
+
+.MuiButton-root.delete-button:hover,
+.MuiButton-root.delete-button:focus-visible {
+  background-color: #B3261E;
+}
+
+.MuiButton-root.delete-button:active {
+  background-color: #8F1712;
+}
+
+.sortable-table-heading {
+  border-radius: 4px;
+  color: inherit;
+  margin: -2px -6px;
+  padding: 2px 6px;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: background-color 120ms ease, color 120ms ease, transform 80ms ease;
+}
+
+.sortable-table-heading:hover {
+  background-color: var(--sortable-heading-hover);
+  color: var(--app-text-primary);
+}
+
+.sortable-table-heading:active {
+  background-color: var(--sortable-heading-active);
+  color: var(--app-text-primary);
+  transform: translateY(1px) scale(0.98);
+}
+
+.sortable-table-heading.Mui-focusVisible {
+  outline: 2px solid var(--app-text-primary);
+  outline-offset: 2px;
+}
+
+.sort-direction-icon {
+  font-size: 1rem !important;
+  margin-left: 4px;
+  opacity: 0;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.sortable-table-heading:hover .sort-direction-icon {
+  opacity: 0.55;
+}
+
+.sort-direction-icon-active {
+  opacity: 1;
+}
+
+.sortable-table-heading:hover .sort-direction-icon-active {
+  opacity: 1;
+}
+
+.sort-direction-icon-ascending {
+  transform: rotate(180deg);
+}
